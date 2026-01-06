@@ -35,6 +35,7 @@ export default function Navbar() {
             <Link href="/#courses" className="hover:text-brand-accent transition">Courses</Link>
             <Link href="/#coaches" className="hover:text-brand-accent transition">Coaches</Link>
             <Link href="/contact" className="hover:text-brand-accent transition">Contact</Link>
+            <Link href="/blog" className="hover:text-brand-accent transition">Blog</Link>
             <a 
               href={`https://wa.me/${WHATSAPP_NUMBER}?text=I'm%20interested%20in%20a%20trial%20class`} 
               target="_blank" 
@@ -59,6 +60,7 @@ export default function Navbar() {
         <Link href="/#courses" onClick={() => setIsMobileMenuOpen(false)} className="block py-3 px-4 text-sm text-white hover:bg-slate-700">Courses</Link>
         <Link href="/#coaches" onClick={() => setIsMobileMenuOpen(false)} className="block py-3 px-4 text-sm text-white hover:bg-slate-700">Coaches</Link>
         <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="block py-3 px-4 text-sm text-white hover:bg-slate-700">Contact Us</Link>
+        <Link href="/blog" onClick={() => setIsMobileMenuOpen(false)} className="block py-3 px-4 text-sm text-white hover:bg-slate-700">Blog</Link>
       </div>
     </nav>
   );
