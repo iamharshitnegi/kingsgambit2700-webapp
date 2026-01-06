@@ -4,6 +4,7 @@ import { PortableText } from 'next-sanity';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import Image from 'next/image';
+import ChessGame from '../../components/ChessGame';
 
 // 1. Define the Post Interface (what data we get back)
 interface Post {
@@ -45,6 +46,9 @@ const ptComponents = {
           />
         </div>
       );
+    },
+    chess: ({ value }: any) => {
+      return <ChessGame pgn={value.pgn} title={value.title} />;
     },
   },
   block: {

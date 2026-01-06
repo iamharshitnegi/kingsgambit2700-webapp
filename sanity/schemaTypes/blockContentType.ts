@@ -72,5 +72,6 @@ export const blockContentType = defineType({
         }
       ]
     }),
+    defineArrayMember({ type: 'chess' }),
   ],
 })
