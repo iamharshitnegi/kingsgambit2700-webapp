@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import StatsSection from './components/StatsSection';
 import { WHATSAPP_NUMBER } from './constants';
 import Link from 'next/link';
 
@@ -8,7 +9,7 @@ export default function Home() {
     <>
       <Navbar />
 
-      {/* Hero Section */}
+      {/* Hero Section with Stats Overlay */}
       <section className="relative h-screen flex items-center justify-center text-center text-white">
         <div className="absolute inset-0 bg-slate-900">
           <img src="https://images.unsplash.com/photo-1529699211952-734e80c4d42b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Chess Board" className="w-full h-full object-cover opacity-40" />
@@ -22,13 +23,18 @@ export default function Home() {
             Unlock your potential with professional chess coaching. Join a community where strategy meets creativity.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href={`https://wa.me/${WHATSAPP_NUMBER}`} className="bg-brand-accent hover:bg-amber-600 text-white px-8 py-4 rounded-lg font-bold text-lg transition shadow-lg">
+            <Link href="/contact" className="bg-brand-accent hover:bg-amber-600 text-white px-8 py-4 rounded-lg font-bold text-lg transition shadow-lg">
               Get a Free Trial
-            </a>
+            </Link>
             <Link href="#courses" className="border-2 border-white hover:bg-white hover:text-brand-dark text-white px-8 py-4 rounded-lg font-bold text-lg transition">
               Explore Courses
             </Link>
           </div>
+        </div>
+
+        {/* Stats Section Overlay */}
+        <div className="absolute bottom-0 left-0 right-0 z-20">
+          <StatsSection />
         </div>
       </section>
 
