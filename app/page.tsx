@@ -1,6 +1,7 @@
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import StatsSection from './components/StatsSection';
+import CourseLevels from './components/CourseLevels';
 import { WHATSAPP_NUMBER } from './constants';
 import Link from 'next/link';
 
@@ -33,9 +34,14 @@ export default function Home() {
         </div>
 
         {/* Stats Section Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 z-20">
+        <div className="hidden md:block absolute bottom-0 left-0 right-0 z-20">
           <StatsSection />
         </div>
+      </section>
+
+      {/* Stats Section for Mobile - Below Hero */}
+      <section className="md:hidden bg-white">
+        <StatsSection />
       </section>
 
       {/* Vision Section */}
@@ -45,7 +51,7 @@ export default function Home() {
             <div>
               <h2 className="text-3xl font-serif font-bold text-brand-dark mb-6">More Than Just a Game</h2>
               <p className="text-gray-600 mb-4 leading-relaxed">
-                At ChessMaster Academy, we believe chess is a tool for life. Our vision is to cultivate critical thinking, patience, and sportsmanship in every student.
+                At KingsGambit2700, we believe chess is a tool for life. Our vision is to cultivate critical thinking, patience, and sportsmanship in every student.
               </p>
               <p className="text-gray-600 mb-6 leading-relaxed">
                 Whether you are looking to compete at the national level or simply want to improve concentration, our curriculum is designed to adapt to your goals.
@@ -57,7 +63,7 @@ export default function Home() {
                 </li>
                 <li className="flex items-center gap-3">
                   <i className="fa-solid fa-check-circle text-brand-accent"></i>
-                  <span>Small batch sizes (Max 8 students)</span>
+                  <span>Small batch sizes (Max 6 students)</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <i className="fa-solid fa-check-circle text-brand-accent"></i>
@@ -77,64 +83,24 @@ export default function Home() {
       </section>
 
       {/* Courses Section */}
-      <section id="courses" className="py-20 bg-slate-50">
+      <section id="courses" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-serif font-bold text-brand-dark">Our Training Levels</h2>
             <p className="text-gray-600 mt-4">Structured paths for every age and skill level</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition border-t-4 border-green-500">
-              <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mb-6 text-green-600 text-2xl">
-                <i className="fa-solid fa-chess-pawn"></i>
-              </div>
-              <h3 className="text-xl font-bold mb-2">Beginner</h3>
-              <p className="text-sm text-gray-500 mb-4">Age 5-10 • No prior experience</p>
-              <p className="text-gray-600 mb-6 text-sm">Learn the rules, piece movements, basic checkmates, and board vision.</p>
-              <Link href="/contact" className="text-green-600 font-bold hover:underline">Enquire Now →</Link>
-            </div>
-
-            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition border-t-4 border-brand-accent transform md:-translate-y-4 relative">
-              <div className="absolute top-0 right-0 bg-brand-accent text-white text-xs px-3 py-1 rounded-bl-lg font-bold">POPULAR</div>
-              <div className="w-14 h-14 bg-amber-100 rounded-full flex items-center justify-center mb-6 text-brand-accent text-2xl">
-                <i className="fa-solid fa-chess-knight"></i>
-              </div>
-              <h3 className="text-xl font-bold mb-2">Intermediate</h3>
-              <p className="text-sm text-gray-500 mb-4">Rating &lt; 1200 • Tactics focus</p>
-              {/* The fix is below: class -> className */}
-              <p className="text-gray-600 mb-6 text-sm">Mastering tactics (pins, forks), opening principles, and endgame basics.</p>
-              <Link href="/contact" className="text-brand-accent font-bold hover:underline">Enquire Now →</Link>
-            </div>
-
-            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition border-t-4 border-red-500">
-              <div className="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mb-6 text-red-600 text-2xl">
-                <i className="fa-solid fa-chess-queen"></i>
-              </div>
-              <h3 className="text-xl font-bold mb-2">Advanced</h3>
-              <p className="text-sm text-gray-500 mb-4">Rating 1400+ • Strategy focus</p>
-              <p className="text-gray-600 mb-6 text-sm">Deep opening repertoire, positional play, complex calculation, and tournament prep.</p>
-              <Link href="/contact" className="text-red-600 font-bold hover:underline">Enquire Now →</Link>
-            </div>
-          </div>
+          <CourseLevels />
         </div>
       </section>
 
       {/* Coaches Section */}
       <section id="coaches" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <h2 className="text-3xl font-serif font-bold text-brand-dark text-center mb-12">Meet Your Mentors</h2>
-          <div className="grid md:grid-cols-4 gap-8 text-center">
-            {/* Coach Items (Repetitive structure optimized slightly for loops, but keeping explicit for now) */}
-            <div className="group">
-              <div className="relative w-40 h-40 mx-auto mb-4 overflow-hidden rounded-full border-4 border-slate-100 shadow-inner">
-                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Coach" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
-              </div>
-              <h3 className="text-lg font-bold text-brand-dark">Arjun Mehta</h3>
-              <p className="text-brand-accent text-sm font-semibold">International Master</p>
-            </div>
-            {/* ... (Add other coaches similarly) ... */}
-          </div>
+        <div className="max-w-3xl mx-auto px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-serif font-bold text-brand-dark mb-6">Our Expert Coaches</h2>
+          <p className="text-xl text-gray-600 leading-relaxed">
+            We have highly experienced <strong className="text-brand-accent font-semibold">FIDE-certified coaches</strong> who cater to the unique needs of our students. From building strong foundations to mastering complex strategies, our mentors are dedicated to unlocking your highest potential.
+          </p>
         </div>
       </section>
 

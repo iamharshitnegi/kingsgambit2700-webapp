@@ -25,7 +25,7 @@ export default function Navbar() {
           <Link href="/" className="flex-shrink-0 flex items-center gap-2 cursor-pointer">
             <i className="fa-solid fa-chess-king text-brand-accent text-3xl"></i>
             <span className="font-serif text-xl font-bold tracking-wide text-white">
-              ChessMaster<span className="text-brand-accent">Academy</span>
+              KingsGambit<span className="text-brand-accent">2700</span>
             </span>
           </Link>
 

@@ -15,24 +15,24 @@ interface StatsSectionProps {
 
 const defaultStats: StatItem[] = [
   {
-    value: 30000,
+    value: 100,
     suffix: '+',
     label: 'Chess Students Trained'
   },
   {
-    value: 517000,
+    value: 2000,
     suffix: '+',
-    label: 'Chess Classes Delivered'
+    label: 'Hours Classes'
   },
   {
-    value: 45,
+    value: 10,
     suffix: '+',
     label: 'Countries Served'
   },
   {
-    value: 250,
+    value: 50,
     suffix: '+',
-    label: 'Tournaments Conducted'
+    label: 'FIDE Rated Players Trained'
   }
 ];
 
@@ -67,7 +67,7 @@ export default function StatsSection({ stats = defaultStats }: StatsSectionProps
   return (
     <section 
       ref={sectionRef}
-      className="py-16 md:py-24 relative z-20"
+      className="py-8 md:py-16 lg:py-24 relative z-20 w-full"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -78,7 +78,7 @@ export default function StatsSection({ stats = defaultStats }: StatsSectionProps
             >
               <div className="mb-3">
                 {isVisible ? (
-                  <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-white drop-shadow-lg">
+                  <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-brand-dark md:text-white drop-shadow-lg">
                     <CountUp
                       end={stat.value}
                       duration={2}
@@ -87,12 +87,12 @@ export default function StatsSection({ stats = defaultStats }: StatsSectionProps
                     />
                   </div>
                 ) : (
-                  <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-white drop-shadow-lg">
+                  <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-brand-dark md:text-white drop-shadow-lg">
                     0{stat.suffix}
                   </div>
                 )}
               </div>
-              <p className="text-sm md:text-base text-white font-medium leading-tight drop-shadow-md">
+              <p className="text-sm md:text-base text-brand-dark md:text-white font-medium leading-tight drop-shadow-md">
                 {stat.label}
               </p>
             </div>
