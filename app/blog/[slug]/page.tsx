@@ -6,13 +6,35 @@ import Footer from '../../components/Footer';
 import Image from 'next/image';
 import ChessGame from '../../components/ChessGame';
 
+import { Metadata } from 'next';
+
 // 1. Define the Post Interface (what data we get back)
 interface Post {
   title: string;
   publishedAt: string;
   mainImage: any;
   body: any;
-  authorName: string; // Assuming standard schema has author->name
+  authorName: string;
+  excerpt?: string;
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPost(slug);
+  
+  if (!post) return { title: 'Post Not Found' };
+
+  return {
+    title: post.title,
+    description: post.excerpt || `Read our latest article: ${post.title}`,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: 'article',
+      publishedTime: post.publishedAt,
+      images: post.mainImage ? [urlFor(post.mainImage).width(1200).url()] : [],
+    },
+  };
 }
 
 // 2. Fetch data for a single post
@@ -23,7 +45,8 @@ async function getPost(slug: string) {
       publishedAt,
       mainImage,
       body,
-      "authorName": author->name
+      "authorName": author->name,
+      "excerpt": array::join(string::split((pt::text(body)), "")[0..160], "")
     }
   `;
   return client.fetch(query, { slug });
@@ -120,6 +143,25 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           <div className="prose prose-lg max-w-none">
             <PortableText value={post.body} components={ptComponents} />
           </div>
+
+          {/* BlogPosting Schema */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "BlogPosting",
+                "headline": post.title,
+                "image": post.mainImage ? urlFor(post.mainImage).width(1200).url() : undefined,
+                "datePublished": post.publishedAt,
+                "author": {
+                  "@type": "Person",
+                  "name": post.authorName
+                },
+                "description": post.excerpt
+              })
+            }}
+          />
         </div>
       </article>
       <Footer />

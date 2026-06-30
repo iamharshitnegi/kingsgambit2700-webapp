@@ -1,0 +1,42 @@
+export const CITY_DATA: Record<string, any> = {
+  dubai: {
+    name: 'Dubai',
+    timezone: 'GST',
+    schools: 'GEMS World Academy, Dubai British School',
+    headline: 'Top-Rated Online Chess Classes in Dubai',
+    subheadline: 'Master chess from the comfort of your home in Dubai with elite FIDE coaches.',
+    description: 'Our curriculum is designed to fit the busy schedules of students in the UAE. We offer flexible timings in GST and have trained students from top international schools in Dubai.',
+  },
+  bengaluru: {
+    name: 'Bengaluru',
+    timezone: 'IST',
+    schools: 'NPS, Indus International, Bishop Cotton',
+    headline: 'Best Online Chess Academy in Bengaluru',
+    subheadline: 'Unlock your child\'s potential with Bengaluru\'s premier online chess coaching.',
+    description: 'Join hundreds of students from Bangalore who are mastering strategy and critical thinking with our FIDE-certified coaches. Perfect for students from top schools like NPS and Bishop Cotton.',
+  },
+  delhi: {
+    name: 'Delhi',
+    timezone: 'IST',
+    schools: 'DPS, Modern School, Step by Step',
+    headline: 'Online Chess Coaching for Students in Delhi NCR',
+    subheadline: 'Professional chess training for kids and masters in New Delhi and Gurgaon.',
+    description: 'We offer structured chess courses aligned with the academic cycles of top Delhi schools. Our coaches have a proven track record of producing national-level players from the NCR region.',
+  },
+  singapore: {
+    name: 'Singapore',
+    timezone: 'SGT',
+    schools: 'UWC South East Asia, Tanglin Trust School',
+    headline: 'Premium Online Chess Classes in Singapore',
+    subheadline: 'Elite chess mentoring for students in Singapore.',
+    description: 'Our online academy brings global chess expertise to students in Singapore. With flexible SGT timings and a world-class curriculum, we help students excel in both local and international tournaments.',
+  },
+  london: {
+    name: 'London',
+    timezone: 'GMT/BST',
+    schools: 'St Paul\'s, Westminster School',
+    headline: 'Expert Online Chess Mentoring in London',
+    subheadline: 'Learn chess from FIDE masters in the heart of London, online.',
+    description: 'KingsGambit2700 provides high-quality chess coaching for London students. Our interactive platform and expert mentors make learning chess engaging and effective, fitting perfectly into the London school life.',
+  },
+};

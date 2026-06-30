@@ -33,47 +33,49 @@ export default async function BlogPage() {
   const posts: Post[] = await getPosts();
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen bg-brand-cream">
       <Navbar />
-      <main className="min-h-screen pt-24 pb-12 bg-slate-50">
+
+      <main className="flex-grow pt-32 pb-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-serif font-bold text-brand-dark mb-4">Chess Insights</h1>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+          <div className="text-center mb-16">
+            <div className="text-brand-gold text-xs uppercase tracking-[0.2em] font-bold mb-4">Our Journal</div>
+            <h1 className="text-5xl md:text-6xl font-serif font-medium text-brand-charcoal mb-6">Chess Insights</h1>
+            <p className="text-stone-600 text-lg max-w-2xl mx-auto">
               Tips, strategies, and academy news from our masters.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto">
             {posts.map((post) => (
-              <Link 
-                href={`/blog/${post.slug.current}`} 
+              <Link
+                href={`/blog/${post.slug.current}`}
                 key={post.slug.current}
-                className="group bg-white rounded-xl shadow-sm hover:shadow-xl transition overflow-hidden border border-slate-100"
+                className="group bg-white rounded-md shadow-sm hover:shadow-md transition duration-300 overflow-hidden border border-brand-border flex flex-col"
               >
                 {/* Image Section */}
-                <div className="h-48 overflow-hidden bg-gray-200 relative">
+                <div className="h-56 overflow-hidden bg-stone-100 relative">
                   {post.mainImage && (
-                    <img 
-                      src={urlFor(post.mainImage).width(800).url()} 
+                    <img
+                      src={urlFor(post.mainImage).width(800).url()}
                       alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                      className="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition duration-500"
                     />
                   )}
                 </div>
 
                 {/* Content Section */}
-                <div className="p-6">
-                  <p className="text-xs text-brand-accent font-bold mb-2 uppercase">
+                <div className="p-8 flex-grow flex flex-col">
+                  <p className="text-[10px] text-brand-gold font-bold mb-3 uppercase tracking-[0.1em]">
                     {new Date(post.publishedAt).toLocaleDateString()}
                   </p>
-                  <h2 className="text-xl font-bold text-brand-dark mb-3 group-hover:text-brand-accent transition">
+                  <h2 className="text-xl font-serif font-medium text-brand-charcoal mb-4 group-hover:text-brand-gold transition leading-snug">
                     {post.title}
                   </h2>
-                  <p className="text-slate-500 text-sm line-clamp-3">
+                  <p className="text-stone-500 text-sm leading-relaxed line-clamp-3 mb-6">
                     {post.excerpt}
                   </p>
-                  <div className="mt-4 text-brand-accent font-semibold text-sm flex items-center gap-1">
+                  <div className="mt-auto text-brand-charcoal font-medium text-[13px] uppercase tracking-wide flex items-center gap-2 group-hover:text-brand-gold transition">
                     Read Article <i className="fa-solid fa-arrow-right text-xs"></i>
                   </div>
                 </div>
@@ -82,13 +84,14 @@ export default async function BlogPage() {
           </div>
 
           {posts.length === 0 && (
-            <div className="text-center py-20">
-              <p className="text-gray-500">No articles published yet.</p>
+            <div className="text-center py-20 border border-dashed border-brand-border max-w-3xl mx-auto rounded-md">
+              <p className="text-stone-500 font-medium">No articles published yet.</p>
             </div>
           )}
         </div>
       </main>
+
       <Footer />
-    </>
+    </div>
   );
 }

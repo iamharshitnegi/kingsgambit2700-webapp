@@ -65,39 +65,27 @@ export default function StatsSection({ stats = defaultStats }: StatsSectionProps
   }, [isVisible]);
 
   return (
-    <section 
-      ref={sectionRef}
-      className="py-8 md:py-16 lg:py-24 relative z-20 w-full"
-    >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {stats.map((stat, index) => (
-            <div 
-              key={index}
-              className="text-center group transform transition-all duration-300 hover:scale-105"
-            >
-              <div className="mb-3">
+    <section ref={sectionRef} className="py-12 md:py-16 flex justify-center w-full bg-brand-cream border-y border-brand-border">
+      <div className="flex flex-wrap justify-center items-center gap-y-8 max-w-5xl mx-auto px-6">
+        {stats.map((stat, index) => (
+          <div key={index} className="flex items-center">
+            <div className="text-center px-6 md:px-10">
+              <div className="font-serif text-[22px] text-brand-charcoal">
                 {isVisible ? (
-                  <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-brand-dark md:text-white drop-shadow-lg">
-                    <CountUp
-                      end={stat.value}
-                      duration={2}
-                      separator=","
-                      suffix={stat.suffix}
-                    />
-                  </div>
+                  <CountUp end={stat.value} duration={2} separator="," suffix={stat.suffix} />
                 ) : (
-                  <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-brand-dark md:text-white drop-shadow-lg">
-                    0{stat.suffix}
-                  </div>
+                  `0${stat.suffix || ''}`
                 )}
               </div>
-              <p className="text-sm md:text-base text-brand-dark md:text-white font-medium leading-tight drop-shadow-md">
+              <div className="text-stone-400 text-[11px] uppercase tracking-wider mt-1">
                 {stat.label}
-              </p>
+              </div>
             </div>
-          ))}
-        </div>
+            {index < stats.length - 1 && (
+              <div className="hidden md:block w-[0.5px] height-[32px] min-h-[32px] bg-brand-border"></div>
+            )}
+          </div>
+        ))}
       </div>
     </section>
   );

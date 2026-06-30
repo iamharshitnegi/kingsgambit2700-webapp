@@ -18,49 +18,47 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-brand-dark shadow-xl bg-opacity-95' : 'bg-brand-dark shadow-lg'}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-20 items-center">
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-brand-cream/90 backdrop-blur-md shadow-sm border-b border-brand-border' : 'bg-transparent border-b border-brand-border'}`}>
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="flex justify-between items-center py-5">
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0 flex items-center gap-2 cursor-pointer">
-            <i className="fa-solid fa-chess-king text-brand-accent text-3xl"></i>
-            <span className="font-serif text-xl font-bold tracking-wide text-white">
-              KingsGambit<span className="text-brand-accent">2700</span>
-            </span>
+          <Link href="/" className="flex items-center gap-3 font-serif text-xl md:text-2xl text-brand-charcoal tracking-[0.3px] font-bold">
+            <img src="/logo.png" alt="KingsGambit 2700" className="h-10 md:h-14 w-auto" />
+            KingsGambit <span className="text-brand-gold italic">2700</span>
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8 text-white">
-            <Link href="/#vision" className="hover:text-brand-accent transition">Vision</Link>
-            <Link href="/#courses" className="hover:text-brand-accent transition">Courses</Link>
-            <Link href="/#coaches" className="hover:text-brand-accent transition">Coaches</Link>
-            <Link href="/contact" className="hover:text-brand-accent transition">Contact</Link>
-            <Link href="/blog" className="hover:text-brand-accent transition">Blog</Link>
+          <div className="hidden md:flex items-center gap-8">
+            <Link href="/#vision" className="text-stone-600 text-sm font-medium hover:text-brand-charcoal transition">Vision</Link>
+            <Link href="/#courses" className="text-stone-600 text-sm font-medium hover:text-brand-charcoal transition">Courses</Link>
+            <Link href="/#coaches" className="text-stone-600 text-sm font-medium hover:text-brand-charcoal transition">Coaches</Link>
+            <Link href="/contact" className="text-stone-600 text-sm font-medium hover:text-brand-charcoal transition">Contact</Link>
+            <Link href="/blog" className="text-stone-600 text-sm font-medium hover:text-brand-charcoal transition">Blog</Link>
             <a 
               href={`https://wa.me/${WHATSAPP_NUMBER}?text=I'm%20interested%20in%20a%20trial%20class`} 
               target="_blank" 
-              className="bg-brand-accent hover:bg-amber-600 text-white px-5 py-2 rounded-full font-semibold transition shadow-md flex items-center gap-2"
+              className="border border-brand-charcoal text-brand-charcoal text-sm font-medium px-5 py-2.5 rounded-md hover:bg-brand-charcoal hover:text-brand-cream transition"
             >
-              <i className="fa-brands fa-whatsapp"></i> Book Free Trial
+              Book a trial
             </a>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
-            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-white focus:outline-none">
-              <i className="fa-solid fa-bars text-2xl"></i>
+            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-brand-charcoal focus:outline-none">
+              <i className="fa-solid fa-bars text-xl"></i>
             </button>
           </div>
         </div>
       </div>
 
       {/* Mobile Menu */}
-      <div className={`md:hidden bg-brand-primary border-t border-slate-700 ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
-        <Link href="/#vision" onClick={() => setIsMobileMenuOpen(false)} className="block py-3 px-4 text-sm text-white hover:bg-slate-700">Vision</Link>
-        <Link href="/#courses" onClick={() => setIsMobileMenuOpen(false)} className="block py-3 px-4 text-sm text-white hover:bg-slate-700">Courses</Link>
-        <Link href="/#coaches" onClick={() => setIsMobileMenuOpen(false)} className="block py-3 px-4 text-sm text-white hover:bg-slate-700">Coaches</Link>
-        <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="block py-3 px-4 text-sm text-white hover:bg-slate-700">Contact Us</Link>
-        <Link href="/blog" onClick={() => setIsMobileMenuOpen(false)} className="block py-3 px-4 text-sm text-white hover:bg-slate-700">Blog</Link>
+      <div className={`md:hidden bg-brand-cream border-t border-brand-border ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
+        <Link href="/#vision" onClick={() => setIsMobileMenuOpen(false)} className="block py-4 px-6 text-base font-medium text-stone-600 border-b border-brand-border/50">Vision</Link>
+        <Link href="/#courses" onClick={() => setIsMobileMenuOpen(false)} className="block py-4 px-6 text-base font-medium text-stone-600 border-b border-brand-border/50">Courses</Link>
+        <Link href="/#coaches" onClick={() => setIsMobileMenuOpen(false)} className="block py-4 px-6 text-base font-medium text-stone-600 border-b border-brand-border/50">Coaches</Link>
+        <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="block py-4 px-6 text-base font-medium text-stone-600 border-b border-brand-border/50">Contact Us</Link>
+        <Link href="/blog" onClick={() => setIsMobileMenuOpen(false)} className="block py-4 px-6 text-base font-medium text-stone-600 border-b border-brand-border/50">Blog</Link>
       </div>
     </nav>
   );

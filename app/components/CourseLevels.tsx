@@ -126,64 +126,47 @@ export default function CourseLevels() {
   };
 
   return (
-    <div className="grid md:grid-cols-3 gap-8">
-      {courseDivisions.map((division) => (
-        <div key={division.id} className={`bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition border-t-4 ${division.borderColor} ${division.isPopular ? 'transform md:-translate-y-4 relative' : ''}`}>
-          {division.isPopular && (
-            <div className="absolute top-0 right-0 bg-brand-accent text-white text-xs px-3 py-1 rounded-bl-lg font-bold">
-              POPULAR
-            </div>
-          )}
-          
-          <div className={`w-14 h-14 ${division.iconBg} rounded-full flex items-center justify-center mb-6 ${division.iconColor} text-2xl`}>
-            <i className={division.iconClass}></i>
-          </div>
-          
-          <h3 className="text-xl font-bold mb-2">{division.title}</h3>
-          <p className="text-sm text-gray-500 mb-4">{division.ageGroup}</p>
-          
-          {/* Sub-Levels Accordion */}
-          <div className="mb-6 space-y-2">
-            {division.levels.map((level) => (
-              <div key={level.id} className="border border-slate-100 rounded-lg overflow-hidden shadow-sm transition-all duration-300">
-                <div className="flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition pr-2">
-                  {/* Clickable Title separate from toggle */}
-                  <Link href={level.link} className={`flex-grow py-3 px-4 text-sm font-semibold hover:underline ${division.textColor}`}>
-                    {level.title}
-                  </Link>
-
-                  {/* Accessible touch-target minimum 44x44 for dropdown toggle */}
-                  <button 
-                    onClick={() => toggleLevel(level.id)}
-                    className="w-11 h-11 flex items-center justify-center text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-200 transition focus:outline-none focus:ring-2 focus:ring-slate-300"
-                    aria-expanded={expandedId === level.id}
-                    aria-label={`Toggle details for ${level.title}`}
-                  >
-                    <i className={`fa-solid fa-chevron-down text-sm transition-transform duration-300 ${expandedId === level.id ? 'rotate-180' : ''}`}></i>
-                  </button>
+    <div className="flex flex-col w-full max-w-4xl mx-auto border-t border-brand-border">
+      {courseDivisions.map((division, index) => (
+        <div key={division.id} className="border-b border-brand-border">
+          <div 
+            onClick={() => toggleLevel(division.id)} 
+            className="flex items-center justify-between py-6 px-2 cursor-pointer hover:bg-black/5 transition"
+          >
+            <div className="flex items-baseline gap-6 md:gap-8">
+              <span className="font-serif text-3xl md:text-4xl text-brand-goldLight">
+                0{index + 1}
+              </span>
+              <div>
+                <div className="flex items-center gap-3">
+                  <span className="text-brand-charcoal text-base md:text-lg font-bold">{division.title}</span>
+                  {division.isPopular && <span className="px-2 py-0.5 bg-brand-gold/10 text-brand-gold text-[10px] font-bold uppercase tracking-wider rounded-sm">Recommended</span>}
                 </div>
-                
-                {/* Accordion Content */}
-                <div 
-                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                    expandedId === level.id ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
-                  }`}
-                >
-                  <div className="p-4 bg-white border-t border-slate-100">
-                    <ul className="text-sm text-gray-600 list-disc pl-4 space-y-1">
-                      {level.points.map((point, i) => (
-                        <li key={i}>{point}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
+                <div className="text-stone-500 text-sm md:text-base mt-1">{division.ageGroup}</div>
               </div>
-            ))}
+            </div>
+            <div className="flex items-center gap-6">
+              <Link href="/contact" className="hidden sm:block text-brand-gold text-sm font-semibold hover:underline" onClick={(e) => e.stopPropagation()}>
+                Enquire
+              </Link>
+              <i className={`fa-solid fa-chevron-down text-brand-goldLight text-base transition-transform duration-300 ${expandedId === division.id ? 'rotate-180' : ''}`}></i>
+            </div>
           </div>
           
-          <Link href="/contact" className={`font-bold hover:underline ${division.textColor}`}>
-            Enquire Now →
-          </Link>
+          <div className={`overflow-hidden transition-all duration-300 ease-in-out ${expandedId === division.id ? 'max-h-96 opacity-100 pb-6' : 'max-h-0 opacity-0'}`}>
+            <div className="pl-16 md:pl-20 pr-4 space-y-5">
+              {division.levels.map((level) => (
+                <div key={level.id}>
+                  <h4 className="text-sm font-bold text-brand-charcoal mb-2">{level.title}</h4>
+                  <ul className="list-disc pl-5 space-y-1.5 text-stone-600 text-sm md:text-base">
+                    {level.points.map((point, i) => (
+                      <li key={i}>{point}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       ))}
     </div>

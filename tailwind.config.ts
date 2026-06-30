@@ -10,10 +10,11 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          dark: '#0f172a',    // Navy/Slate
-          primary: '#1e293b',
-          accent: '#d97706',  // Amber/Gold
-          light: '#f8fafc'
+          cream: '#f7f4ed',
+          charcoal: '#1c1917',
+          gold: '#a3793c',
+          goldLight: '#d6cbb0',
+          border: '#e3dcc9'
         }
       },
       fontFamily: {
