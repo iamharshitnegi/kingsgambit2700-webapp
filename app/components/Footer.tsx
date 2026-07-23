@@ -48,8 +48,15 @@ export default function Footer() {
           </ul>
         </div>
       </div>
-      <div className="border-t border-brand-border pt-8 text-center text-stone-400 text-[11px] uppercase tracking-wider">
-        &copy; {new Date().getFullYear()} KingsGambit2700. All rights reserved.
+      <div className="border-t border-brand-border pt-8">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center text-stone-400 text-[11px] uppercase tracking-wider w-full gap-4">
+          <div>&copy; {new Date().getFullYear()} KingsGambit2700. All rights reserved.</div>
+          <div className="flex gap-4">
+            <Link href="/privacy-policy" className="hover:text-brand-charcoal transition">Privacy Policy</Link>
+            <span>|</span>
+            <Link href="/terms-of-service" className="hover:text-brand-charcoal transition">Terms of Service</Link>
+          </div>
+        </div>
       </div>
     </footer>
   );
