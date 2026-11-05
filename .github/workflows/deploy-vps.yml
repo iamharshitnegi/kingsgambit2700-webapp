@@ -52,7 +52,11 @@ jobs:
           )
           bundle="$RUNNER_TEMP/kg2700-release/release.tar"
           digest="$(sha256sum "$bundle" | cut -d ' ' -f 1)"
+          [[ "$GITHUB_SHA" =~ ^[0-9a-f]{40}$ && "$digest" =~ ^[0-9a-f]{64}$ ]]
+          # Expand these validated arguments locally for the restricted SSH entrypoint.
+          # shellcheck disable=SC2029
           ssh "${ssh_options[@]}" "root@$VPS_HOST" "upload $GITHUB_SHA $digest" < "$bundle"
+          # shellcheck disable=SC2029
           ssh "${ssh_options[@]}" "root@$VPS_HOST" "deploy $GITHUB_SHA"
       - name: Verify public HTTPS
         run: |
