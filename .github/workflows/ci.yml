@@ -115,7 +115,7 @@ jobs:
       - if: always()
         run: docker compose logs --no-color > compose-services.log
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: integration-service-logs
           path: compose-services.log
