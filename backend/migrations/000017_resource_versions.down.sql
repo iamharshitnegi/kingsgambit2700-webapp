@@ -1,0 +1,1 @@
+DROP TABLE teaching_resource_versions;

@@ -1,0 +1,243 @@
+import AxeBuilder from "@axe-core/playwright";
+import { expect, test, type Page } from "@playwright/test";
+
+async function enter(page: Page, name: string, path: string) {
+  await page.goto("/demo");
+  await page.getByRole("button", { name: new RegExp(name) }).click();
+  await expect(page).toHaveURL(new RegExp(`${path}$`));
+  await expect(page.getByRole("button", { name: /Refresh/ })).toBeVisible();
+}
+
+test("guardian onboarding, payment recovery and persistence", async ({ page }) => {
+  await enter(page, "Priya Sharma", "/guardian");
+  await page.goto("/guardian/students");
+  await page.getByRole("button", { name: "Add student", exact: true }).click();
+  await page.getByLabel("Student name", { exact: true }).fill("Anaya");
+  await page.getByRole("button", { name: "Save student", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Anaya", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Review consent" }).click();
+  await page.getByRole("checkbox").check();
+  await page.getByRole("button", { name: /Accept|Record|Save consent/ }).click();
+  await expect(page.getByText("Guardian consent recorded", { exact: false }).last()).toBeVisible();
+  await page.goto("/guardian");
+  await page.getByRole("button", { name: /Review payment/ }).click();
+  await page.getByRole("button", { name: "Simulate failed payment" }).click();
+  await expect(page.getByRole("alert").filter({ hasText: "declined" })).toBeVisible();
+  await page.getByRole("button", { name: "Simulate successful payment" }).click();
+  await expect(page.getByText("16 class credits", { exact: true })).toBeVisible();
+  await page.reload();
+  await expect(page.getByText("16 class credits", { exact: true })).toBeVisible();
+  await page.goto("/guardian/students");
+  await expect(page.getByRole("heading", { name: "Anaya", exact: true })).toBeVisible();
+  const accessibility = await new AxeBuilder({ page }).analyze();
+  expect(accessibility.violations).toEqual([]);
+});
+
+test("student submission reaches coach and class completion reaches guardian", async ({ page }) => {
+  await enter(page, "Aarav", "/student");
+  await page.goto("/student/homework");
+  await page.getByRole("button", { name: "View Look for checks, captures and threats", exact: true }).click();
+  await page.getByRole("button", { name: "Start homework", exact: true }).click();
+  await page.getByLabel("Your thinking").fill("The bishop attacks f7, which is defended only by the king.");
+  await page.getByRole("button", { name: "Submit practice" }).click();
+  await expect(page.getByRole("article").getByText("With your coach", { exact: true })).toBeVisible();
+  await enter(page, "Coach Maya", "/coach");
+  await page.goto("/coach/homework");
+  await page.getByRole("button", { name: "View Look for checks, captures and threats · Aarav", exact: true }).click();
+  await expect(page.locator("blockquote").filter({ hasText: "The bishop attacks f7, which is defended only by the king." }).first()).toBeVisible();
+  await page.getByLabel("Coach feedback", { exact: true }).fill("Good observation. Check the opponent’s threats before attacking.");
+  await page.getByRole("button", { name: "Share feedback" }).click();
+  await expect(page.getByRole("article").getByText("Completed", { exact: true })).toBeVisible();
+  await page.goto("/coach/calendar");
+  await page.getByRole("button", { name: "Agenda", exact: true }).click();
+  await page.getByRole("button", { name: /^View / }).first().click();
+  await page.getByRole("button", { name: "Attendance & notes" }).click();
+  const completion = page.getByRole("dialog", { name: "Attendance & lesson notes" });
+  await completion.getByRole("combobox").selectOption("on_time");
+  await completion.getByLabel("Lesson notes").fill("Aarav practised forcing moves and explained the f7 weakness clearly.");
+  await completion.getByRole("button", { name: "Complete class" }).click();
+  await expect(page.getByRole("status")).toContainText("Class completed");
+  await enter(page, "Priya Sharma", "/guardian");
+  await expect(page.getByText("8 class credits", { exact: true })).toBeVisible();
+  await expect(page.getByText("Aarav practised forcing moves and explained the f7 weakness clearly.")).toBeVisible();
+});
+
+test("public trial flows into the operations queue", async ({ page }) => {
+  await page.goto("/free-trial");
+  await page.getByLabel("Guardian or adult learner name").fill("Demo Trial Parent");
+  await page.getByLabel("Student age").selectOption("8_12");
+  await page.getByLabel("Two-letter country code").fill("IN");
+  await page.locator('input[name="slotId"]').first().check();
+  await page.getByLabel("Email", { exact: true }).fill("trial@example.test");
+  await page.getByLabel("I agree that the academy may contact me to arrange and deliver this trial.").check();
+  await page.getByRole("button", { name: "Confirm trial" }).click();
+  await expect(page.getByRole("heading", { name: "Your assessment is booked." })).toBeVisible();
+  await enter(page, "Alex · Operations", "/admin");
+  await page.goto("/admin/operations");
+  const enquiry = page.locator("article").filter({ has: page.getByRole("heading", { name: "Demo Trial Parent", exact: true }) });
+  await expect(enquiry.getByText("trial booked", { exact: true })).toBeVisible();
+  await enquiry.getByRole("button", { name: "Update enquiry" }).click();
+  await page.getByLabel("Enquiry stage").selectOption("contacted");
+  await page.getByRole("button", { name: "Save follow-up" }).click();
+  await page.reload();
+  await expect(enquiry.getByText("contacted", { exact: true })).toBeVisible();
+});
+
+test("draft reports stay private until academic publication", async ({ page }) => {
+  await enter(page, "Priya Sharma", "/guardian");
+  await page.goto("/guardian/progress");
+  await expect(page.getByRole("heading", { name: "Building a thinking routine" })).toHaveCount(0);
+  await enter(page, "Sam · Academics", "/admin");
+  await page.goto("/admin/progress");
+  await page.getByRole("button", { name: "Submit for review" }).click();
+  await page.getByRole("button", { name: "Approve & publish" }).click();
+  await expect(page.getByRole("status")).toContainText("published");
+  await enter(page, "Priya Sharma", "/guardian");
+  await page.goto("/guardian/progress");
+  await expect(page.getByRole("heading", { name: "Building a thinking routine" })).toBeVisible();
+  await page.getByRole("button", { name: /Mark as read/ }).last().click();
+  await expect(page.getByText("Read by guardian", { exact: false })).toBeVisible();
+});
+
+test("student routes deny operations access and demo reset restores samples", async ({ page }) => {
+  await enter(page, "Aarav", "/student");
+  await page.goto("/admin");
+  await expect(page).toHaveURL(/\/forbidden$/);
+  await page.goto("/demo");
+  await page.getByRole("button", { name: "Reset demo data" }).click();
+  await page.getByRole("button", { name: "Reset sample academy" }).click();
+  await expect(page.getByRole("status")).toContainText("restored");
+});
+
+test("coach and student share legal board moves across tabs", async ({ page, context }) => {
+  await enter(page, "Coach Maya", "/coach");
+  await page.getByRole("button", { name: "View Finding the winning move", exact: true }).click();
+  await page.getByRole("link", { name: /Join classroom/ }).click();
+  await page.getByRole("button", { name: "Join classroom board" }).click();
+  await expect(page.getByLabel("Move notation")).toBeEnabled();
+  await page.reload();
+  await expect(page.getByLabel("Move notation")).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Flip board", exact: true })).toBeVisible();
+  const boardAccessibility = await new AxeBuilder({ page }).include(".classroom-board-live").analyze();
+  expect(boardAccessibility.violations).toEqual([]);
+  await expect(page.getByRole("button", { name: "Black rook on a8", exact: true })).toBeVisible();
+  const student = await context.newPage();
+  await enter(student, "Aarav", "/student");
+  await student.getByRole("button", { name: "View Finding the winning move", exact: true }).click();
+  await student.getByRole("link", { name: /Join classroom/ }).click();
+  await student.getByRole("button", { name: "Join classroom board" }).click();
+  await expect(student.getByLabel("Move notation")).toBeDisabled();
+  await page.getByLabel("Move notation").fill("e4");
+  await page.getByRole("button", { name: "Play move" }).click();
+  await expect(student.getByText("1 move", { exact: true })).toBeVisible();
+  await page.getByRole("checkbox", { name: "Allow student moves" }).check();
+  await expect(student.getByLabel("Move notation")).toBeEnabled();
+  await student.getByLabel("Move notation").fill("e5");
+  await student.getByRole("button", { name: "Play move" }).click();
+  await expect(page.getByText("2 moves", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Undo move" }).click();
+  await expect(student.getByText("1 move", { exact: true })).toBeVisible();
+  await student.getByLabel("Move notation").fill("e4");
+  await student.getByRole("button", { name: "Play move" }).click();
+  await expect(student.getByRole("alert").filter({ hasText: "legal move" })).toBeVisible();
+  await student.close();
+  await page.getByRole("button", { name: "Leave board", exact: true }).click();
+  await page.reload();
+  await expect(page.getByRole("button", { name: "Join classroom board" })).toBeVisible();
+});
+
+test("support replies persist while internal notes remain staff-only", async ({ page }) => {
+  await enter(page, "Priya Sharma", "/guardian");
+  await page.goto("/guardian/support");
+  await page.getByLabel("Subject", { exact: true }).fill("Help with the next class");
+  await page.getByLabel("Message", { exact: true }).fill("Could we discuss a different class time next month?");
+  await page.getByRole("button", { name: "Open case" }).click();
+  await expect(page.getByRole("heading", { name: "Help with the next class" })).toBeVisible();
+  await enter(page, "Alex · Operations", "/admin");
+  await page.goto("/admin/support");
+  await page.getByRole("button", { name: /Help with the next class/ }).click();
+  await page.getByLabel("Add a reply").fill("Internal staffing review for this request.");
+  await page.getByLabel("Save as an internal note").check();
+  await page.getByRole("button", { name: "Add reply", exact: true }).click();
+  await expect(page.getByText("Internal staffing review for this request.", { exact: true })).toBeVisible();
+  await page.getByLabel("Add a reply").fill("We will help find a suitable class time.");
+  await page.getByRole("button", { name: "Add reply", exact: true }).click();
+  await expect(page.getByText("We will help find a suitable class time.", { exact: true })).toBeVisible();
+  await enter(page, "Priya Sharma", "/guardian");
+  await page.goto("/guardian/support");
+  await page.getByRole("button", { name: /Help with the next class/ }).click();
+  await expect(page.getByText("We will help find a suitable class time.", { exact: true })).toBeVisible();
+  await expect(page.getByText("Internal staffing review for this request.", { exact: true })).toHaveCount(0);
+});
+
+test("coach schedules a class and creates homework using the shared portal forms", async ({ page }) => {
+  await enter(page, "Coach Maya", "/coach");
+  await page.goto("/coach/calendar");
+  await page.getByRole("button", { name: "Schedule class", exact: true }).click();
+  const dialog = page.getByRole("dialog", { name: "Schedule a class" });
+  await dialog.getByLabel("Lesson title or topic").fill("Calculation workshop");
+  const day = new Date(Date.now() + 3 * 86400000).toISOString().slice(0, 10);
+  await dialog.getByLabel("Local start").fill(`${day}T14:00`);
+  await dialog.getByRole("button", { name: "Preview schedule" }).click();
+  await expect(dialog.getByRole("heading", { name: "1 class ready to schedule" })).toBeVisible();
+  await dialog.getByRole("button", { name: "Confirm schedule" }).click();
+  await expect(page.getByRole("heading", { name: "Calculation workshop" })).toBeVisible();
+  await page.goto("/coach/homework");
+  await page.getByRole("button", { name: "Create homework", exact: true }).click();
+  const homework = page.getByRole("dialog", { name: "Create homework" });
+  await homework.getByLabel("Homework title").fill("Explain your candidate moves");
+  await homework.getByLabel("Instructions", { exact: true }).fill("List two candidate moves and explain your choice.");
+  await homework.getByRole("button", { name: "Continue", exact: true }).click();
+  await homework.getByRole("checkbox", { name: "Aarav", exact: true }).check();
+  await homework.getByRole("radio", { name: /Assign to learners/ }).check();
+  await homework.getByRole("button", { name: "Continue", exact: true }).click();
+  await homework.getByRole("button", { name: "Assign homework", exact: true }).click();
+  await page.getByRole("button", { name: "View Explain your candidate moves · Aarav", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Explain your candidate moves" })).toBeVisible();
+  await enter(page, "Aarav", "/student");
+  await page.getByRole("button", { name: "View Calculation workshop", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Calculation workshop" })).toBeVisible();
+  await page.goto("/student/homework");
+  await page.getByRole("button", { name: "View Explain your candidate moves", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Explain your candidate moves" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Create homework" })).toHaveCount(0);
+});
+
+test("student uploads and downloads practice evidence through the shared file form", async ({ page }) => {
+  await enter(page, "Aarav", "/student");
+  await page.goto("/student/homework");
+  await page.getByRole("button", { name: "View Look for checks, captures and threats", exact: true }).click();
+  await page.getByRole("button", { name: "Start homework", exact: true }).click();
+  await page.getByText("Attach practice evidence", { exact: true }).click();
+  await page.getByLabel(/^Practice evidence/).setInputFiles({ name: "my-opening.pgn", mimeType: "application/x-chess-pgn", buffer: Buffer.from("1. e4 e5 2. Nf3 Nc6 *") });
+  await page.getByRole("button", { name: "Upload file", exact: true }).click();
+  await expect(page.getByRole("status").filter({ hasText: "my-opening.pgn" })).toBeVisible();
+  await page.reload();
+  await page.getByRole("button", { name: "View Look for checks, captures and threats", exact: true }).click();
+  const downloadEvent = page.waitForEvent("download");
+  await page.getByRole("button", { name: "my-opening.pgn", exact: true }).first().click();
+  const download = await downloadEvent;
+  expect(download.suggestedFilename()).toBe("my-opening.pgn");
+});
+
+test("super-admin can review, suspend and reactivate staff without changing their roles", async ({ page }) => {
+  await enter(page, "Admin", "/admin");
+  await page.goto("/admin/settings");
+  const finance = page.getByRole("article").filter({ has: page.getByRole("heading", { name: "Jordan · Finance", exact: true }) });
+  await expect(finance.getByText("Finance admin", { exact: true })).toBeVisible();
+  await finance.getByRole("button", { name: "Edit staff access" }).click();
+  await page.getByRole("dialog").getByLabel("Account status").selectOption("suspended");
+  await page.getByRole("button", { name: "Save staff access" }).click();
+  await expect(finance.getByText("suspended", { exact: true })).toBeVisible();
+  await page.goto("/demo");
+  await page.getByRole("button", { name: /Jordan · Finance/ }).click();
+  await expect(page.getByRole("alert").filter({ hasText: /suspended/i })).toBeVisible();
+  await enter(page, "Admin", "/admin");
+  await page.goto("/admin/settings");
+  await finance.getByRole("button", { name: "Edit staff access" }).click();
+  await page.getByRole("dialog").getByLabel("Account status").selectOption("active");
+  await page.getByRole("button", { name: "Save staff access" }).click();
+  await expect(finance.getByText("active", { exact: true })).toBeVisible();
+  await enter(page, "Jordan · Finance", "/admin");
+  await expect(page.getByRole("link", { name: "Homework", exact: true })).toHaveCount(0);
+});

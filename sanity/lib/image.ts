@@ -1,11 +1,10 @@
-import createImageUrlBuilder from '@sanity/image-url'
-import { dataset, projectId } from '../env'
+import createImageUrlBuilder from "@sanity/image-url";
+import { dataset, projectId, sanityConfigured } from "../env";
 
-const builder = createImageUrlBuilder({
-  projectId: projectId || '',
-  dataset: dataset || '',
-})
+const builder = sanityConfigured ? createImageUrlBuilder({ projectId, dataset }) : null;
+type ImageSource = Parameters<ReturnType<typeof createImageUrlBuilder>["image"]>[0];
 
-export const urlFor = (source: any) => {
-  return builder.image(source)
+export function urlFor(source: ImageSource) {
+  if (!builder) throw new Error("Sanity image service is not configured.");
+  return builder.image(source);
 }

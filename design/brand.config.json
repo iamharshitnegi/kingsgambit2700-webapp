@@ -1,0 +1,111 @@
+{
+  "$schema": "./brand.schema.json",
+  "name": "KingsGambit2700 · Open Play",
+  "version": "1.0.0",
+  "status": "approved",
+  "description": "Approved Open Play design for the KingsGambit2700 application: expressive typography, sculptural chess, warm brown and soft sand-gold accents.",
+  "defaultAccent": "brown",
+  "accents": {
+    "brown": {
+      "label": "Brown / Sand",
+      "primary": "#8C652D",
+      "primaryHover": "#705025",
+      "primarySoft": "#F8F2E7",
+      "onPrimary": "#FFFFFF",
+      "highlight": "#D9C59A",
+      "onHighlight": "#302419"
+    },
+    "cobalt": {
+      "label": "Cobalt / Citrus",
+      "primary": "#273DE6",
+      "primaryHover": "#1B2DB5",
+      "primarySoft": "#ECEEFF",
+      "onPrimary": "#FFFFFF",
+      "highlight": "#D4FF5A",
+      "onHighlight": "#18220B"
+    },
+    "forest": {
+      "label": "Forest / Butter",
+      "primary": "#17634D",
+      "primaryHover": "#104936",
+      "primarySoft": "#E8F2ED",
+      "onPrimary": "#FFFFFF",
+      "highlight": "#F9E89E",
+      "onHighlight": "#322B0E"
+    },
+    "plum": {
+      "label": "Plum / Peach",
+      "primary": "#783F87",
+      "primaryHover": "#5D2D69",
+      "primarySoft": "#F5ECF7",
+      "onPrimary": "#FFFFFF",
+      "highlight": "#FFD4B8",
+      "onHighlight": "#382315"
+    }
+  },
+  "colors": {
+    "canvas": "#F4F0E5",
+    "surface": "#FBF9F4",
+    "ink": "#2D2923",
+    "muted": "#6B645B",
+    "subtle": "#EDE6D8",
+    "line": "#D8D0BF",
+    "dark": "#201D18",
+    "onDark": "#F4F0E5",
+    "success": "#226346",
+    "successSoft": "#EAF4ED",
+    "warning": "#835600",
+    "warningSoft": "#FFF3D6",
+    "danger": "#B3303C",
+    "dangerSoft": "#FDEDEF",
+    "boardLight": "#EDDEC1",
+    "boardDark": "#B08C5C"
+  },
+  "typography": {
+    "display": "'Syne', 'Arial Black', sans-serif",
+    "body": "'Manrope', 'Segoe UI', sans-serif",
+    "mono": "'IBM Plex Mono', monospace",
+    "displayWeight": 600,
+    "bodyWeight": 400,
+    "scale": {
+      "micro": "0.6875rem",
+      "small": "0.8125rem",
+      "body": "0.9375rem",
+      "lead": "1.125rem",
+      "title": "clamp(2rem, 4vw, 3.25rem)",
+      "hero": "clamp(3.25rem, 6.6vw, 6.5rem)"
+    }
+  },
+  "spacing": {
+    "1": "0.25rem",
+    "2": "0.5rem",
+    "3": "0.75rem",
+    "4": "1rem",
+    "6": "1.5rem",
+    "8": "2rem",
+    "12": "3rem",
+    "16": "4rem",
+    "24": "6rem"
+  },
+  "radius": {
+    "small": "8px",
+    "medium": "16px",
+    "large": "28px",
+    "pill": "999px"
+  },
+  "layout": {
+    "contentMax": "1320px",
+    "gutter": "clamp(20px, 4.5vw, 80px)",
+    "sidebar": "232px"
+  },
+  "motion": {
+    "fast": "160ms",
+    "normal": "260ms",
+    "entrance": "650ms",
+    "ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+  },
+  "shadow": {
+    "card": "0 8px 28px rgba(45, 41, 35, 0.045)",
+    "float": "0 16px 48px rgba(45, 41, 35, 0.12)"
+  }
+}

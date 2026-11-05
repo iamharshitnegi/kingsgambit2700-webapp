@@ -1,0 +1,2 @@
+# Normalize text notices while preserving their wording and binary assets.
+*.txt text eol=lf

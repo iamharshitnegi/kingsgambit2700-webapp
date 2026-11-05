@@ -1,5 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /.pnp
@@ -10,32 +8,56 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
+# generated test reports, traces, screenshots, and coverage
 /coverage
+/playwright-report/
+/test-results/
+/test-results-workspace/
+/backend/coverage.out
+*.test
 
-# next.js
-/.next/
+# Next.js build outputs and local verification builds
+/.next*/
 /out/
+next-env.d.ts
+*.tsbuildinfo
 
 # production
 /build
+/backend/bin/
 
-# misc
+# temporary exports, caches, and standalone design experiments
+/output/
+/tmp/
+/.cache/
+/design-demo/
+__pycache__/
+*.py[cod]
+
+# machine-specific files and editor extension archives
 .DS_Store
 *.pem
+*.key
+*.vsix
+/.aws/
+/.codex/
+/.agents/
 
-# debug
+# logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# private environment files; keep reusable configuration examples
 .env*
+!.env.example
+
+# Engine binaries are copied from the pinned npm dependency by predev/prebuild.
+# Keep the source archive, evaluation network, notices, and GPL license in Git.
+/public/engine/stockfish-19-lite-single.js
+/public/engine/stockfish-19-lite-single.wasm
 
 # vercel
 .vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts

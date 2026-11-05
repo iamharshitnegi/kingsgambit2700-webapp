@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.kingsgambit2700.in/schemas/ws/client-message.v1.schema.json",
+  "title": "KingsGambit2700 classroom client message v1",
+  "oneOf": [
+    { "$ref": "#/$defs/join" },
+    { "$ref": "#/$defs/resume" },
+    { "$ref": "#/$defs/move" },
+    { "$ref": "#/$defs/setMode" },
+    { "$ref": "#/$defs/loadPosition" },
+    { "$ref": "#/$defs/closeBoard" },
+    { "$ref": "#/$defs/featureCommand" },
+    { "$ref": "#/$defs/ping" }
+  ],
+  "$defs": {
+    "join": {
+      "type": "object",
+      "required": ["type", "commandId", "ticket"],
+      "properties": {
+        "type": { "const": "join" },
+        "commandId": { "$ref": "#/$defs/uuidv7" },
+        "ticket": { "type": "string", "minLength": 40, "maxLength": 64 }
+      },
+      "additionalProperties": false,
+      "description": "Must be the first frame. Ticket is short-lived and single-use."
+    },
+    "uuidv7": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "base": {
+      "type": "object",
+      "required": ["type", "commandId"],
+      "properties": {
+        "type": { "type": "string" },
+        "commandId": { "$ref": "#/$defs/uuidv7" }
+      }
+    },
+    "resume": {
+      "type": "object",
+      "required": ["type", "commandId", "afterRevision"],
+      "properties": {
+        "type": { "const": "resume" },
+        "commandId": { "$ref": "#/$defs/uuidv7" },
+        "afterRevision": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "move": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "type": "object",
+          "required": ["type", "commandId", "expectedRevision", "move"],
+          "properties": {
+            "type": { "const": "move" },
+            "commandId": { "$ref": "#/$defs/uuidv7" },
+            "expectedRevision": { "type": "integer", "minimum": 0 },
+            "move": { "type": "string", "minLength": 4, "maxLength": 8 }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "setMode": {
+      "type": "object",
+      "required": ["type", "commandId", "expectedRevision", "mode"],
+      "properties": {
+        "type": { "const": "setMode" },
+        "commandId": { "$ref": "#/$defs/uuidv7" },
+        "expectedRevision": { "type": "integer", "minimum": 0 },
+        "mode": { "enum": ["demonstration", "free_analysis", "student_turn", "private_response", "game_review", "engine_review"] },
+        "activeActorId": { "$ref": "#/$defs/uuidv7" }
+      },
+      "additionalProperties": false
+    },
+    "loadPosition": {
+      "type": "object",
+      "required": ["type", "commandId", "expectedRevision", "fen", "moves"],
+      "properties": {
+        "type": { "const": "loadPosition" },
+        "commandId": { "$ref": "#/$defs/uuidv7" },
+        "expectedRevision": { "type": "integer", "minimum": 0 },
+        "fen": { "type": "string", "minLength": 1 },
+        "moves": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "closeBoard": {
+      "type": "object",
+      "required": ["type", "commandId", "expectedRevision"],
+      "properties": {
+        "type": { "const": "closeBoard" },
+        "commandId": { "$ref": "#/$defs/uuidv7" },
+        "expectedRevision": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "featureCommand": {
+      "type": "object",
+      "required": ["type", "commandId"],
+      "properties": {
+        "type": { "enum": ["annotation", "undo", "checkpoint", "exerciseAssign", "privateResponse", "exerciseReveal", "presence", "providerState"] },
+        "commandId": { "$ref": "#/$defs/uuidv7" },
+        "expectedRevision": { "type": "integer", "minimum": 0 },
+        "payload": { "type": "object" }
+      },
+      "additionalProperties": false,
+      "description": "Reserved v1 commands. Disabled commands receive a stable not_implemented rejection and never mutate state."
+    },
+    "ping": {
+      "type": "object",
+      "required": ["type", "commandId"],
+      "properties": {
+        "type": { "const": "ping" },
+        "commandId": { "$ref": "#/$defs/uuidv7" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

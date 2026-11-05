@@ -1,0 +1,221 @@
+name: kingsgambit2700
+
+x-backend-environment: &backend-environment
+  KG_ENV: development
+  KG_GOOGLE_CLIENT_ID: ${KG_GOOGLE_CLIENT_ID:-}
+  KG_DATABASE_URL: postgres://kg2700:kg2700@postgres:5432/kg2700?sslmode=disable
+  KG_DATABASE_DIRECT_URL: postgres://kg2700:kg2700@postgres:5432/kg2700?sslmode=disable
+  KG_REDIS_URL: redis://redis:6379/0
+  KG_PUBLIC_API_URL: http://localhost:8080
+  KG_PUBLIC_WEB_URL: http://localhost:3000
+  KG_ALLOWED_ORIGINS: http://localhost:3000
+  KG_COOKIE_NAME: kg_session
+  KG_COOKIE_SECURE: "false"
+  KG_SESSION_HASH_KEY: ${SESSION_HASH_KEY:-local-session-key-change-before-shared-use}
+  KG_CSRF_HASH_KEY: ${CSRF_HASH_KEY:-local-csrf-key-change-before-shared-use}
+  KG_TOTP_ENCRYPTION_KEY: ${TOTP_ENCRYPTION_KEY:-bG9jYWwta2cyNzAwLXRvdHAta2V5LW1hdGVyaWFsLTE=}
+  KG_MFA_CHALLENGE_TTL: 5m
+  KG_MFA_RECENT_TTL: 5m
+  KG_SESSION_IDLE_TTL: 30m
+  KG_SESSION_ABSOLUTE_TTL: 168h
+  KG_MAGIC_LINK_TTL: 15m
+  KG_CSRF_TTL: 30m
+  KG_S3_ENDPOINT: http://s3mock:9090
+  KG_S3_REGION: us-east-1
+  KG_S3_ACCESS_KEY_ID: local-access-key
+  KG_S3_SECRET_ACCESS_KEY: local-secret-key
+  KG_S3_BUCKET_QUARANTINE: kg2700-quarantine
+  KG_S3_BUCKET_CLEAN: kg2700-clean
+  KG_S3_FORCE_PATH_STYLE: "true"
+  KG_CLAMAV_ADDR: clamav:3310
+  KG_EMAIL_PROVIDER: smtp
+  KG_SMTP_HOST: mailpit
+  KG_SMTP_PORT: "1025"
+  KG_SMTP_FROM: academy@kingsgambit2700.in
+  KG_RESEND_FROM: KingsGambit2700 <academy@kingsgambit2700.in>
+  KG_RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID:-}
+  KG_RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET:-}
+  KG_RAZORPAY_WEBHOOK_SECRET: ${RAZORPAY_WEBHOOK_SECRET:-local-razorpay-webhook-secret}
+  KG_RESEND_API_KEY: ${RESEND_API_KEY:-}
+  KG_RESEND_WEBHOOK_SECRET: ${RESEND_WEBHOOK_SECRET:-whsec_bG9jYWwtcmVzZW5kLXdlYmhvb2stc2VjcmV0LTAwMDE=}
+  KG_DAILY_API_KEY: ${DAILY_API_KEY:-}
+  KG_DAILY_WEBHOOK_SECRET: ${DAILY_WEBHOOK_SECRET:-bG9jYWwtZGFpbHktd2ViaG9vay1zZWNyZXQ=}
+
+services:
+  postgres:
+    image: postgres:18.3-alpine
+    environment:
+      POSTGRES_DB: kg2700
+      POSTGRES_USER: kg2700
+      POSTGRES_PASSWORD: kg2700
+      PGDATA: /var/lib/postgresql/18/docker
+    ports:
+      - "127.0.0.1:${KG_POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kg2700 -d kg2700"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  redis:
+    image: redis:8.2.8-alpine
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory-policy", "noeviction"]
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    restart: unless-stopped
+
+  s3mock:
+    image: adobe/s3mock:5.1.0
+    environment:
+      COM_ADOBE_TESTING_S3MOCK_STORE_INITIAL_BUCKETS: kg2700-quarantine,kg2700-clean
+      COM_ADOBE_TESTING_S3MOCK_STORE_RETAIN_FILES_ON_EXIT: "true"
+      COM_ADOBE_TESTING_S3MOCK_STORE_ROOT: /s3mockroot
+    ports:
+      - "127.0.0.1:9090:9090"
+      - "127.0.0.1:9191:9191"
+    volumes:
+      - s3_data:/s3mockroot
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:9090/"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+    restart: unless-stopped
+
+  mailpit:
+    image: axllent/mailpit:v1.27
+    environment:
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: "1"
+      MP_SMTP_AUTH_ALLOW_INSECURE: "1"
+    ports:
+      - "127.0.0.1:1025:1025"
+      - "127.0.0.1:8025:8025"
+    volumes:
+      - mailpit_data:/data
+    healthcheck:
+      test: ["CMD", "/mailpit", "readyz"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  clamav:
+    image: clamav/clamav:stable
+    ports:
+      - "127.0.0.1:3310:3310"
+    volumes:
+      - clamav_data:/var/lib/clamav
+    healthcheck:
+      test: ["CMD-SHELL", "clamdscan --ping 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 20
+      start_period: 90s
+    restart: unless-stopped
+
+  migrate:
+    image: migrate/migrate:v4.18.3
+    profiles: ["app"]
+    volumes:
+      - ./backend/migrations:/migrations:ro
+    command:
+      - -path=/migrations
+      - -database=postgres://kg2700:kg2700@postgres:5432/kg2700?sslmode=disable
+      - up
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  river-migrate:
+    profiles: ["app"]
+    build:
+      context: ./backend
+      target: river-migrate
+    environment:
+      KG_DATABASE_DIRECT_URL: postgres://kg2700:kg2700@postgres:5432/kg2700?sslmode=disable
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: "no"
+
+  api:
+    profiles: ["app"]
+    build:
+      context: ./backend
+      target: api
+    environment:
+      <<: *backend-environment
+      KG_API_ADDR: :8080
+      KG_OTEL_SERVICE_NAME: kg2700-api
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      s3mock:
+        condition: service_healthy
+      mailpit:
+        condition: service_healthy
+      clamav:
+        condition: service_healthy
+    restart: unless-stopped
+
+  worker:
+    profiles: ["app"]
+    build:
+      context: ./backend
+      target: worker
+    environment:
+      <<: *backend-environment
+      KG_OTEL_SERVICE_NAME: kg2700-worker
+    depends_on:
+      river-migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      s3mock:
+        condition: service_healthy
+      mailpit:
+        condition: service_healthy
+      clamav:
+        condition: service_healthy
+    restart: unless-stopped
+
+  realtime:
+    profiles: ["app"]
+    build:
+      context: ./backend
+      target: realtime
+    environment:
+      <<: *backend-environment
+      KG_REALTIME_ADDR: :8081
+      KG_OTEL_SERVICE_NAME: kg2700-realtime
+    ports:
+      - "127.0.0.1:8081:8081"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  s3_data:
+  mailpit_data:
+  clamav_data:

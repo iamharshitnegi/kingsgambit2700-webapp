@@ -1,42 +1,51 @@
-export const CITY_DATA: Record<string, any> = {
+export type CityContent = {
+  name: string;
+  timeZone: string;
+  timeZoneLabel: string;
+  headline: string;
+  subheadline: string;
+  description: string;
+};
+
+export const CITY_DATA: Record<string, CityContent> = {
   dubai: {
-    name: 'Dubai',
-    timezone: 'GST',
-    schools: 'GEMS World Academy, Dubai British School',
-    headline: 'Top-Rated Online Chess Classes in Dubai',
-    subheadline: 'Master chess from the comfort of your home in Dubai with elite FIDE coaches.',
-    description: 'Our curriculum is designed to fit the busy schedules of students in the UAE. We offer flexible timings in GST and have trained students from top international schools in Dubai.',
+    name: "Dubai",
+    timeZone: "Asia/Dubai",
+    timeZoneLabel: "Gulf Standard Time",
+    headline: "Online chess coaching for learners in Dubai",
+    subheadline: "Live assessment and coaching paths with times shown clearly in your local time zone.",
+    description: "Explore the same academy curriculum and coach-matching process online, with published trial availability converted for Dubai.",
   },
   bengaluru: {
-    name: 'Bengaluru',
-    timezone: 'IST',
-    schools: 'NPS, Indus International, Bishop Cotton',
-    headline: 'Best Online Chess Academy in Bengaluru',
-    subheadline: 'Unlock your child\'s potential with Bengaluru\'s premier online chess coaching.',
-    description: 'Join hundreds of students from Bangalore who are mastering strategy and critical thinking with our FIDE-certified coaches. Perfect for students from top schools like NPS and Bishop Cotton.',
+    name: "Bengaluru",
+    timeZone: "Asia/Kolkata",
+    timeZoneLabel: "India Standard Time",
+    headline: "Online chess coaching for learners in Bengaluru",
+    subheadline: "A structured path from first assessment to purposeful live learning.",
+    description: "Explore small-group and one-to-one paths, then begin with a live level assessment shown in India Standard Time.",
   },
   delhi: {
-    name: 'Delhi',
-    timezone: 'IST',
-    schools: 'DPS, Modern School, Step by Step',
-    headline: 'Online Chess Coaching for Students in Delhi NCR',
-    subheadline: 'Professional chess training for kids and masters in New Delhi and Gurgaon.',
-    description: 'We offer structured chess courses aligned with the academic cycles of top Delhi schools. Our coaches have a proven track record of producing national-level players from the NCR region.',
+    name: "Delhi",
+    timeZone: "Asia/Kolkata",
+    timeZoneLabel: "India Standard Time",
+    headline: "Online chess coaching for learners in Delhi NCR",
+    subheadline: "Live instruction, a visible level framework, and a thoughtful first assessment.",
+    description: "Review the academy’s public curriculum and coaching formats before choosing a published assessment time in India Standard Time.",
   },
   singapore: {
-    name: 'Singapore',
-    timezone: 'SGT',
-    schools: 'UWC South East Asia, Tanglin Trust School',
-    headline: 'Premium Online Chess Classes in Singapore',
-    subheadline: 'Elite chess mentoring for students in Singapore.',
-    description: 'Our online academy brings global chess expertise to students in Singapore. With flexible SGT timings and a world-class curriculum, we help students excel in both local and international tournaments.',
+    name: "Singapore",
+    timeZone: "Asia/Singapore",
+    timeZoneLabel: "Singapore Standard Time",
+    headline: "Online chess coaching for learners in Singapore",
+    subheadline: "A clear curriculum and online assessment process, with local-time scheduling.",
+    description: "Explore live small-group and one-to-one paths, with published trial availability converted for Singapore.",
   },
   london: {
-    name: 'London',
-    timezone: 'GMT/BST',
-    schools: 'St Paul\'s, Westminster School',
-    headline: 'Expert Online Chess Mentoring in London',
-    subheadline: 'Learn chess from FIDE masters in the heart of London, online.',
-    description: 'KingsGambit2700 provides high-quality chess coaching for London students. Our interactive platform and expert mentors make learning chess engaging and effective, fitting perfectly into the London school life.',
+    name: "London",
+    timeZone: "Europe/London",
+    timeZoneLabel: "UK local time",
+    headline: "Online chess coaching for learners in London",
+    subheadline: "Structured online learning with times displayed in the learner’s own time zone.",
+    description: "Start with a live assessment, review the appropriate curriculum level, and discuss a suitable online format for the learner.",
   },
 };

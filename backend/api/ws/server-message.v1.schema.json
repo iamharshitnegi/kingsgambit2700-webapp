@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.kingsgambit2700.in/schemas/ws/server-message.v1.schema.json",
+  "title": "KingsGambit2700 classroom server message v1",
+  "oneOf": [
+    { "$ref": "#/$defs/snapshot" }, { "$ref": "#/$defs/accepted" },
+    { "$ref": "#/$defs/rejected" }, { "$ref": "#/$defs/revisionGap" },
+    { "$ref": "#/$defs/presence" }, { "$ref": "#/$defs/privateResponse" },
+    { "$ref": "#/$defs/exerciseReveal" }, { "$ref": "#/$defs/providerState" },
+    { "$ref": "#/$defs/error" }
+  ],
+  "$defs": {
+    "state": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sessionId", "fen", "moves", "mode", "revision", "status"],
+      "properties": {
+        "sessionId": { "type": "string", "format": "uuid" }, "fen": { "type": "string" },
+        "moves": { "type": "array", "items": { "type": "string" } }, "mode": { "type": "string" },
+        "activeActorId": { "type": "string", "format": "uuid" },
+        "revision": { "type": "integer", "minimum": 0 }, "status": { "enum": ["open", "closed"] }
+      }
+    },
+    "event": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "sessionId", "revision", "kind", "actorId", "occurredAt"],
+      "properties": {
+        "id": { "type": "string", "format": "uuid" }, "sessionId": { "type": "string", "format": "uuid" },
+        "revision": { "type": "integer", "minimum": 1 },
+        "kind": { "enum": ["move_applied", "mode_changed", "position_loaded", "board_closed"] },
+        "actorId": { "type": "string", "format": "uuid" }, "occurredAt": { "type": "string", "format": "date-time" },
+        "move": { "type": "string" }, "fen": { "type": "string" }, "mode": { "type": "string" },
+        "activeActorId": { "type": "string", "format": "uuid" }
+      }
+    },
+    "snapshot": {
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "protocolVersion", "commandId", "snapshot", "events"],
+      "properties": {
+        "type": { "const": "snapshot" }, "protocolVersion": { "const": 1 },
+        "commandId": { "type": "string", "format": "uuid" }, "snapshot": { "$ref": "#/$defs/state" },
+        "events": { "type": "array", "items": { "$ref": "#/$defs/event" } }
+      }
+    },
+    "accepted": {
+      "type": "object", "additionalProperties": false, "required": ["type", "commandId"],
+      "properties": {
+        "type": { "const": "accepted" }, "commandId": { "type": "string", "format": "uuid" },
+        "operation": { "type": "string" }, "state": { "$ref": "#/$defs/state" }, "event": { "$ref": "#/$defs/event" }
+      }
+    },
+    "rejected": {
+      "type": "object", "additionalProperties": false, "required": ["type", "commandId", "code", "detail"],
+      "properties": {
+        "type": { "const": "rejected" }, "commandId": { "type": "string", "format": "uuid" },
+        "code": { "enum": ["not_implemented", "invalid_message", "unauthorized", "illegal_move", "revision_conflict", "board_closed"] },
+        "detail": { "type": "string" }, "currentRevision": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "revisionGap": {
+      "type": "object", "additionalProperties": false, "required": ["type", "sessionId", "revision"],
+      "properties": { "type": { "const": "revisionGap" }, "sessionId": { "type": "string", "format": "uuid" }, "revision": { "type": "integer", "minimum": 1 } },
+      "description": "Redis invalidation hint; resume reloads PostgreSQL-backed canonical state."
+    },
+    "presence": { "allOf": [{ "$ref": "#/$defs/featureEvent" }, { "properties": { "type": { "const": "presence" } } }] },
+    "privateResponse": { "allOf": [{ "$ref": "#/$defs/featureEvent" }, { "properties": { "type": { "const": "privateResponse" } } }] },
+    "exerciseReveal": { "allOf": [{ "$ref": "#/$defs/featureEvent" }, { "properties": { "type": { "const": "exerciseReveal" } } }] },
+    "providerState": { "allOf": [{ "$ref": "#/$defs/featureEvent" }, { "properties": { "type": { "const": "providerState" } } }] },
+    "featureEvent": {
+      "type": "object", "additionalProperties": false, "required": ["type", "sessionId", "revision", "payload"],
+      "properties": {
+        "type": { "enum": ["presence", "privateResponse", "exerciseReveal", "providerState"] },
+        "sessionId": { "type": "string", "format": "uuid" }, "revision": { "type": "integer", "minimum": 0 },
+        "payload": { "type": "object" }
+      }
+    },
+    "error": {
+      "type": "object", "additionalProperties": false, "required": ["type", "code", "detail"],
+      "properties": {
+        "type": { "const": "error" }, "commandId": { "type": "string", "format": "uuid" },
+        "code": { "enum": ["invalid_ticket", "invalid_message", "internal_error"] }, "detail": { "type": "string" }
+      }
+    }
+  }
+}

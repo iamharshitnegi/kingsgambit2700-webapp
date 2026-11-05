@@ -1,0 +1,32 @@
+{
+    email {$ACME_EMAIL}
+}
+
+{$WEB_DOMAIN} {
+    encode zstd gzip
+    reverse_proxy frontend:3000
+}
+
+www.{$WEB_DOMAIN} {
+    redir https://{$WEB_DOMAIN}{uri} permanent
+}
+
+{$API_DOMAIN} {
+    encode zstd gzip
+
+    handle /ws/v1 {
+        reverse_proxy realtime:8081
+    }
+
+    handle /api/v1/* {
+        reverse_proxy api:8080
+    }
+
+    handle /health/* {
+        reverse_proxy api:8080
+    }
+
+    handle {
+        respond 404
+    }
+}

@@ -1,170 +1,45 @@
-import { client } from '@/sanity/lib/client';
-import { urlFor } from '@/sanity/lib/image';
-import { PortableText } from 'next-sanity';
-import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
-import Image from 'next/image';
-import ChessGame from '../../components/ChessGame';
+import type { Metadata } from "next";
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import { PortableText } from "next-sanity";
+import ChessGame from "../../components/ChessGame";
+import PublicShell from "../../components/public/PublicShell";
+import { client } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
 
-import { Metadata } from 'next';
+type PortableValue = Array<{ _type: string; _key?: string; [key: string]: unknown }>;
+type Post = { title: string; publishedAt: string; mainImage?: Parameters<typeof urlFor>[0]; body: PortableValue; authorName?: string; excerpt?: string };
 
-// 1. Define the Post Interface (what data we get back)
-interface Post {
-  title: string;
-  publishedAt: string;
-  mainImage: any;
-  body: any;
-  authorName: string;
-  excerpt?: string;
+async function getPost(slug: string): Promise<Post | null> {
+  if (!client) return null;
+  try {
+    return await client.fetch(`*[_type == "post" && slug.current == $slug && defined(publishedAt) && publishedAt >= "2000-01-01T00:00:00Z"][0] { title, publishedAt, mainImage, body, "authorName": author->name, "excerpt": array::join(string::split(pt::text(body), "")[0..160], "") }`, { slug });
+  } catch { return null; }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPost(slug);
-  
-  if (!post) return { title: 'Post Not Found' };
-
-  return {
-    title: post.title,
-    description: post.excerpt || `Read our latest article: ${post.title}`,
-    openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      type: 'article',
-      publishedTime: post.publishedAt,
-      images: post.mainImage ? [urlFor(post.mainImage).width(1200).url()] : [],
-    },
-  };
+  if (!post) return { title: "Article not found" };
+  return { title: post.title, description: post.excerpt, openGraph: { title: post.title, description: post.excerpt, type: "article", publishedTime: post.publishedAt, images: post.mainImage ? [urlFor(post.mainImage).width(1200).height(630).fit("crop").url()] : [] } };
 }
 
-// 2. Fetch data for a single post
-async function getPost(slug: string) {
-  const query = `
-    *[_type == "post" && slug.current == $slug][0] {
-      title,
-      publishedAt,
-      mainImage,
-      body,
-      "authorName": author->name,
-      "excerpt": array::join(string::split((pt::text(body)), "")[0..160], "")
-    }
-  `;
-  return client.fetch(query, { slug });
-}
-
-// 3. Define Custom Styles for the Rich Text
-// This tells Next.js how to style Sanity's content using Tailwind
-const ptComponents = {
+const components = {
   types: {
-    image: ({ value }: any) => {
-      if (!value?.asset?._ref) {
-        return null;
-      }
-      return (
-        <div className="relative w-full h-96 my-8 rounded-lg overflow-hidden">
-          <img
-            src={urlFor(value).fit('max').auto('format').url()}
-            alt={value.alt || ' '}
-            className="object-cover w-full h-full"
-          />
-        </div>
-      );
-    },
-    chess: ({ value }: any) => {
-      return <ChessGame pgn={value.pgn} title={value.title} />;
-    },
+    image: ({ value }: { value: { asset?: { _ref?: string }; alt?: string } }) => value?.asset?._ref ? <figure className="article-image"><Image src={urlFor(value).width(1400).auto("format").url()} width={1400} height={900} sizes="(max-width: 800px) 100vw, 1000px" alt={value.alt || ""} />{value.alt && <figcaption>{value.alt}</figcaption>}</figure> : null,
+    chess: ({ value }: { value: { pgn: string; title?: string } }) => <ChessGame pgn={value.pgn} title={value.title} />,
   },
   block: {
-    h1: ({ children }: any) => <h1 className="text-3xl font-bold mt-8 mb-4 text-brand-dark">{children}</h1>,
-    h2: ({ children }: any) => <h2 className="text-2xl font-bold mt-8 mb-4 text-brand-dark">{children}</h2>,
-    h3: ({ children }: any) => <h3 className="text-xl font-bold mt-6 mb-3 text-brand-dark">{children}</h3>,
-    normal: ({ children }: any) => <p className="mb-4 text-gray-700 leading-relaxed">{children}</p>,
-    blockquote: ({ children }: any) => (
-      <blockquote className="border-l-4 border-brand-accent pl-4 py-2 my-4 italic bg-slate-50 text-gray-600">
-        {children}
-      </blockquote>
-    ),
-  },
-  list: {
-    bullet: ({ children }: any) => <ul className="list-disc pl-5 mb-4 space-y-2 text-gray-700">{children}</ul>,
-    number: ({ children }: any) => <ol className="list-decimal pl-5 mb-4 space-y-2 text-gray-700">{children}</ol>,
+    h2: ({ children }: { children?: React.ReactNode }) => <h2>{children}</h2>,
+    h3: ({ children }: { children?: React.ReactNode }) => <h3>{children}</h3>,
+    blockquote: ({ children }: { children?: React.ReactNode }) => <blockquote>{children}</blockquote>,
   },
 };
 
-// 4. The Page Component
-// Notice: params is now defined as a Promise
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
-  
-  // 1. Await the params to get the actual slug
   const { slug } = await params;
-
-  // 2. Now pass the awaited slug to your function
-  const post: Post = await getPost(slug);
-
-  if (!post) {
-    return (
-      <div className="text-center py-20">
-        <h1 className="text-2xl font-bold text-brand-dark">Post not found</h1>
-        <p className="text-gray-500 mt-2">The article you are looking for does not exist.</p>
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <Navbar />
-      <article className="min-h-screen pt-24 pb-20 bg-white">
-        {/* Header Section */}
-        <div className="max-w-3xl mx-auto px-6">
-          <div className="text-center mb-8">
-            <p className="text-brand-accent font-bold uppercase tracking-wide text-sm mb-2">
-              {new Date(post.publishedAt).toLocaleDateString()}
-            </p>
-            <h1 className="text-3xl md:text-5xl font-serif font-bold text-brand-dark leading-tight mb-6">
-              {post.title}
-            </h1>
-            {post.authorName && (
-              <p className="text-gray-500 italic">By {post.authorName}</p>
-            )}
-          </div>
-
-          {/* Main Hero Image */}
-          {post.mainImage && (
-            <div className="w-full h-[400px] relative rounded-xl overflow-hidden shadow-xl mb-12">
-               <img
-                  src={urlFor(post.mainImage).width(1200).url()}
-                  alt={post.title}
-                  className="w-full h-full object-cover"
-                />
-            </div>
-          )}
-
-          {/* The Actual Content */}
-          <div className="prose prose-lg max-w-none">
-            <PortableText value={post.body} components={ptComponents} />
-          </div>
-
-          {/* BlogPosting Schema */}
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "BlogPosting",
-                "headline": post.title,
-                "image": post.mainImage ? urlFor(post.mainImage).width(1200).url() : undefined,
-                "datePublished": post.publishedAt,
-                "author": {
-                  "@type": "Person",
-                  "name": post.authorName
-                },
-                "description": post.excerpt
-              })
-            }}
-          />
-        </div>
-      </article>
-      <Footer />
-    </>
-  );
+  const post = await getPost(slug);
+  if (!post) notFound();
+  const image = post.mainImage ? urlFor(post.mainImage).width(1500).height(900).fit("crop").auto("format").url() : undefined;
+  return <PublicShell><main><article className="article-page"><header><span className="eyebrow">Academy journal · {new Date(post.publishedAt).toLocaleDateString("en", { day: "numeric", month: "long", year: "numeric" })}</span><h1>{post.title}</h1>{post.authorName && <p>By {post.authorName}</p>}</header>{image && <div className="article-hero-image"><Image src={image} width={1500} height={900} sizes="(max-width: 1220px) 100vw, 1180px" alt="" priority /></div>}<div className="article-body"><PortableText value={post.body} components={components} /></div><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BlogPosting", headline: post.title, image, datePublished: post.publishedAt, author: post.authorName ? { "@type": "Person", name: post.authorName } : undefined, description: post.excerpt }).replace(/</g, "\\u003c") }} /></article></main></PublicShell>;
 }

@@ -1,0 +1,53 @@
+/* Shared foundations. Values come from design/brand.config.json via RootLayout. */
+body { color: var(--ink); font-family: var(--font-body); font-weight: var(--font-body-weight); }
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: var(--font-display-weight); letter-spacing: -.045em; text-wrap: balance; }
+button, input, select, textarea { font-family: var(--font-body); }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+input, select, textarea { accent-color: var(--primary); }
+:focus-visible { outline: 3px solid var(--primary); outline-offset: 4px; }
+::selection { background: var(--highlight); color: var(--on-highlight); }
+.kg-brand-logo { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 50%; background: var(--surface); }
+.kg-brand-logo img { display: block; }
+.kg-icon { display: block; flex-shrink: 0; }
+.eyebrow { font-family: var(--font-mono); font-size: .6875rem; font-weight: 500; letter-spacing: .12em; color: var(--primary); }
+.eyebrow-light { color: var(--highlight); }
+.button { min-height: 46px; padding: 13px 21px; border-radius: var(--radius-small); font-size: .8125rem; font-weight: 700; letter-spacing: -.01em; transition: background-color var(--motion-fast) ease, color var(--motion-fast) ease, border-color var(--motion-fast) ease, transform var(--motion-fast) var(--motion-ease); }
+.button-gold, .button-primary { background: var(--primary); color: var(--on-primary); }
+.button-gold:hover, .button-primary:hover { background: var(--primary-hover); }
+.button-dark { background: var(--dark); color: var(--on-dark); }
+.button-dark:hover { background: var(--ink); }
+.button-cream { background: var(--surface); color: var(--ink); border-color: var(--line); }
+.button-highlight { background: var(--highlight); color: var(--on-highlight); }
+.button-highlight:hover { background: var(--surface); }
+.button-quiet, .button-outline { color: var(--ink); border-color: var(--line); }
+.button-quiet:hover, .button-outline:hover { background: var(--subtle); border-color: var(--primary); }
+.text-link, .arrow-link { font-size: .8125rem; }
+.academy-form input:not([type="checkbox"]):not([type="radio"]), .academy-form select, .academy-form textarea, .auth-form input { border-color: var(--line); border-radius: var(--radius-small); background: var(--surface); color: var(--ink); font-size: 16px; }
+.academy-form input:focus, .academy-form select:focus, .academy-form textarea:focus, .auth-form input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent); }
+.academy-form label > span, .auth-form label > span { color: var(--ink); font-size: .8125rem; font-weight: 650; letter-spacing: 0; }
+.academy-form label small { color: var(--muted); }
+.academy-form legend { font-family: var(--font-display); font-weight: var(--font-display-weight); }
+.check-field { font-size: .8125rem; line-height: 1.7; }
+.check-field input { accent-color: var(--primary); }
+.form-message { border-radius: var(--radius-small); font-size: .8125rem; }
+.form-message-error { background: var(--danger-soft); color: var(--danger); border-left-color: var(--danger); }
+.form-fineprint, .timezone-note { font-size: .75rem; }
+.form-success { border-radius: var(--radius-medium); }
+.form-success h2 { font-weight: var(--font-display-weight); }
+.segmented-control { border-radius: var(--radius-small); overflow: hidden; }
+.segmented-control button { font-size: .8125rem; }
+.segmented-control .is-selected { background: var(--primary); color: var(--on-primary); }
+.slot-option { border-radius: var(--radius-small); }
+.slot-option:has(input:checked) { background: var(--primary-soft); border-color: var(--primary); }
+.editorial-copy p, .policy-document > p, .policy-document section p, .policy-html p, .policy-html li, .article-body p, .article-body li { font-family: var(--font-body); }
+.hero-note, .policy-version, .contact-direct, .level-grid section, .assessment-callout, .coach-card, .empty-editorial, .pricing-card, .pricing-questions { border-radius: var(--radius-medium); }
+.coach-card { overflow: hidden; }
+.level-grid h3, .program-detail-main h2, .curriculum-track > header h2, .coach-card-content h2, .pricing-card h2, .policy-document h2, .policy-html h2, .policy-html h3 { font-weight: var(--font-display-weight); }
+.level-kicker, .track-number, .program-detail-number { color: var(--primary); }
+.portal-status, .portal-status-card { border-radius: var(--radius-medium); }
+.portal-status-card h1 { font-weight: var(--font-display-weight); }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}

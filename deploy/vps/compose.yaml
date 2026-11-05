@@ -1,0 +1,233 @@
+name: kg2700-production
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+x-backend: &backend
+  KG_ENV: production
+  KG_API_ADDR: :8080
+  KG_REALTIME_ADDR: :8081
+  KG_PUBLIC_WEB_URL: https://${WEB_DOMAIN:?Set WEB_DOMAIN}
+  KG_PUBLIC_API_URL: https://${API_DOMAIN:?Set API_DOMAIN}
+  KG_ALLOWED_ORIGINS: https://${WEB_DOMAIN:?Set WEB_DOMAIN}
+  KG_TRUSTED_PROXIES: ${CADDY_PRIVATE_IP:-172.30.27.10}
+  KG_DATABASE_URL: postgres://kg2700:${POSTGRES_PASSWORD:?Generate POSTGRES_PASSWORD}@postgres:5432/kg2700?sslmode=disable
+  KG_DATABASE_DIRECT_URL: postgres://kg2700:${POSTGRES_PASSWORD:?Generate POSTGRES_PASSWORD}@postgres:5432/kg2700?sslmode=disable
+  KG_REDIS_URL: redis://redis:6379/0
+  KG_COOKIE_NAME: __Host-kg_session
+  KG_COOKIE_SECURE: "true"
+  KG_TOTP_ENCRYPTION_KEY: ${KG_TOTP_ENCRYPTION_KEY:?Generate KG_TOTP_ENCRYPTION_KEY}
+  KG_GOOGLE_CLIENT_ID: ${KG_GOOGLE_CLIENT_ID:-}
+  KG_EMAIL_PROVIDER: smtp
+  KG_SMTP_HOST: ${KG_SMTP_HOST:?Set a delivery SMTP host}
+  KG_SMTP_PORT: ${KG_SMTP_PORT:-587}
+  KG_SMTP_USER: ${KG_SMTP_USER:-}
+  KG_SMTP_PASSWORD: ${KG_SMTP_PASSWORD:-}
+  KG_SMTP_FROM: ${KG_SMTP_FROM:?Set a verified sender}
+  KG_S3_ENDPOINT: http://storage:8333
+  KG_S3_REGION: us-east-1
+  KG_S3_ACCESS_KEY_ID: ${KG_S3_ACCESS_KEY_ID:?Generate KG_S3_ACCESS_KEY_ID}
+  KG_S3_SECRET_ACCESS_KEY: ${KG_S3_SECRET_ACCESS_KEY:?Generate KG_S3_SECRET_ACCESS_KEY}
+  KG_S3_BUCKET_QUARANTINE: kg2700-quarantine
+  KG_S3_BUCKET_CLEAN: kg2700-clean
+  KG_S3_FORCE_PATH_STYLE: "true"
+  KG_CLAMAV_ADDR: clamav:3310
+  KG_UPLOAD_MAX_BYTES: "10485760"
+  KG_RAZORPAY_WEBHOOK_SECRET: ${KG_RAZORPAY_WEBHOOK_SECRET:?Generate KG_RAZORPAY_WEBHOOK_SECRET}
+  KG_RESEND_WEBHOOK_SECRET: ${KG_RESEND_WEBHOOK_SECRET:?Generate KG_RESEND_WEBHOOK_SECRET}
+  KG_DAILY_WEBHOOK_SECRET: ${KG_DAILY_WEBHOOK_SECRET:?Generate KG_DAILY_WEBHOOK_SECRET}
+  KG_LOG_LEVEL: info
+
+x-service: &service
+  restart: unless-stopped
+  init: true
+  logging: *logging
+
+services:
+  caddy:
+    <<: *service
+    image: caddy:2-alpine
+    networks:
+      default:
+        ipv4_address: ${CADDY_PRIVATE_IP:-172.30.27.10}
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      WEB_DOMAIN: ${WEB_DOMAIN:?Set WEB_DOMAIN}
+      API_DOMAIN: ${API_DOMAIN:?Set API_DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL:?Set ACME_EMAIL}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      frontend:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+      realtime:
+        condition: service_healthy
+
+  frontend:
+    <<: *service
+    image: kg2700-frontend:${RELEASE:-initial}
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+      target: frontend
+      args:
+        WEB_DOMAIN: ${WEB_DOMAIN:?Set WEB_DOMAIN}
+        API_DOMAIN: ${API_DOMAIN:?Set API_DOMAIN}
+    environment:
+      API_BASE_URL: http://api:8080
+      NEXT_PUBLIC_DEMO_MODE: "false"
+    depends_on:
+      api:
+        condition: service_healthy
+
+  api:
+    <<: *service
+    image: kg2700-api:${RELEASE:-initial}
+    build:
+      context: ../../backend
+      target: api
+    environment: *backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      storage:
+        condition: service_healthy
+      clamav:
+        condition: service_healthy
+
+  realtime:
+    <<: *service
+    image: kg2700-realtime:${RELEASE:-initial}
+    build:
+      context: ../../backend
+      target: realtime
+    environment: *backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  worker:
+    <<: *service
+    image: kg2700-worker:${RELEASE:-initial}
+    build:
+      context: ../../backend
+      target: worker
+    environment: *backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    <<: *service
+    image: postgres:18.3-alpine
+    environment:
+      POSTGRES_DB: kg2700
+      POSTGRES_USER: kg2700
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Generate POSTGRES_PASSWORD}
+      PGDATA: /var/lib/postgresql/18/docker
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kg2700 -d kg2700"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    <<: *service
+    image: redis:8.2.8-alpine
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "128mb", "--maxmemory-policy", "noeviction"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  storage:
+    <<: *service
+    image: ${SEAWEEDFS_IMAGE:-chrislusf/seaweedfs:4.52}
+    command: ["mini", "-dir=/data", "-ip.bind=0.0.0.0", "-s3.port=8333"]
+    environment:
+      AWS_ACCESS_KEY_ID: ${KG_S3_ACCESS_KEY_ID:?Generate KG_S3_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${KG_S3_SECRET_ACCESS_KEY:?Generate KG_S3_SECRET_ACCESS_KEY}
+      S3_BUCKET: kg2700-quarantine,kg2700-clean
+    volumes:
+      - storage_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -S --spider http://127.0.0.1:8333/ 2>&1 | grep -q '403 Forbidden'"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 15s
+
+  clamav:
+    <<: *service
+    image: ${CLAMAV_IMAGE:-clamav/clamav:stable}
+    volumes:
+      - clamav_data:/var/lib/clamav
+    healthcheck:
+      test: ["CMD-SHELL", "clamdscan --ping 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 20
+      start_period: 90s
+
+  migrate:
+    profiles: ["tools"]
+    image: migrate/migrate:v4.18.3
+    volumes:
+      - ../../backend/migrations:/migrations:ro
+    command:
+      - -path=/migrations
+      - -database=postgres://kg2700:${POSTGRES_PASSWORD:?Generate POSTGRES_PASSWORD}@postgres:5432/kg2700?sslmode=disable
+      - up
+    logging: *logging
+
+  river-migrate:
+    profiles: ["tools"]
+    image: kg2700-river-migrate:${RELEASE:-initial}
+    build:
+      context: ../../backend
+      target: river-migrate
+    environment:
+      KG_DATABASE_DIRECT_URL: postgres://kg2700:${POSTGRES_PASSWORD:?Generate POSTGRES_PASSWORD}@postgres:5432/kg2700?sslmode=disable
+    logging: *logging
+
+  bootstrap-admin:
+    profiles: ["tools"]
+    image: kg2700-bootstrap-admin:${RELEASE:-initial}
+    build:
+      context: ../../backend
+      target: bootstrap-admin
+    environment:
+      KG_DATABASE_DIRECT_URL: postgres://kg2700:${POSTGRES_PASSWORD:?Generate POSTGRES_PASSWORD}@postgres:5432/kg2700?sslmode=disable
+    logging: *logging
+
+volumes:
+  postgres_data:
+  redis_data:
+  storage_data:
+  clamav_data:
+  caddy_data:
+  caddy_config:
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: ${DOCKER_SUBNET:-172.30.27.0/24}

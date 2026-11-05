@@ -1,0 +1,6370 @@
+openapi: 3.1.0
+info:
+  title: KingsGambit2700 Platform API
+  version: 1.0.0
+  description: Contract for the independently deployed academy backend.
+servers:
+- url: https://api.kingsgambit2700.in/api/v1
+- url: http://localhost:8080/api/v1
+tags:
+- name: Auth
+- name: Public
+- name: Families
+- name: Reports
+- name: Entitlements
+- name: Support
+- name: Webhooks
+- name: Academy
+- name: Learning
+paths:
+  /academy/workspace:
+    get:
+      tags:
+      - Academy
+      operationId: getAcademyWorkspace
+      security:
+      - cookieSession: []
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyWorkspace'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+      parameters:
+      - &id001
+        in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 1
+          default: 500
+        description: Progressive number of records per collection. Use pagination.nextLimit to load older records.
+  /academy/operations:
+    get:
+      tags:
+      - Academy
+      operationId: getAcademyOperations
+      security:
+      - cookieSession: []
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyOperations'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+      parameters:
+      - *id001
+  /academy/profile:
+    patch:
+      tags:
+      - Academy
+      operationId: updateAcademyProfile
+      security:
+      - cookieSession: []
+        csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyProfileInput'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyProfile'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/preferences:
+    put:
+      tags:
+      - Academy
+      operationId: saveAcademyPreferences
+      security:
+      - cookieSession: []
+        csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyPreferences'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyProfile'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/availability:
+    get:
+      tags:
+      - Academy
+      operationId: getAcademyAvailability
+      security:
+      - cookieSession: []
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AcademyAvailability'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+    post:
+      tags:
+      - Academy
+      operationId: saveAcademyAvailability
+      security:
+      - cookieSession: []
+        csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyAvailabilityInput'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyAvailability'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+      parameters:
+      - in: header
+        name: Idempotency-Key
+        schema:
+          type: string
+        description: Reuse the same key and payload to safely replay a creation. Current permissions are rechecked.
+  /academy/availability/{id}:
+    delete:
+      tags:
+      - Academy
+      operationId: deleteAcademyAvailability
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: Completed.
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/students:
+    post:
+      tags:
+      - Academy
+      operationId: createAcademyStudent
+      security:
+      - cookieSession: []
+        csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyStudentInput'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyStudent'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+      parameters:
+      - in: header
+        name: Idempotency-Key
+        schema:
+          type: string
+        description: Reuse the same key and payload to safely replay a creation. Current permissions are rechecked.
+  /academy/staff:
+    post:
+      tags:
+      - Academy
+      operationId: createAcademyStaff
+      security:
+      - cookieSession: []
+        csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyStaffInput'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyCoach'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+      parameters:
+      - in: header
+        name: Idempotency-Key
+        schema:
+          type: string
+        description: Reuse the same key and payload to safely replay a creation. Current permissions are rechecked.
+    get:
+      tags:
+      - Academy
+      operationId: listAcademyStaff
+      security:
+      - cookieSession: []
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyStaffDirectory'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/batches:
+    post:
+      tags:
+      - Academy
+      operationId: createAcademyBatch
+      security:
+      - cookieSession: []
+        csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyBatchInput'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyBatch'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+      parameters:
+      - in: header
+        name: Idempotency-Key
+        schema:
+          type: string
+        description: Reuse the same key and payload to safely replay a creation. Current permissions are rechecked.
+  /academy/enrolments:
+    post:
+      tags:
+      - Academy
+      operationId: createAcademyEnrolment
+      security:
+      - cookieSession: []
+        csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyEnrolmentInput'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyEnrolment'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+      parameters:
+      - in: header
+        name: Idempotency-Key
+        schema:
+          type: string
+        description: Reuse the same key and payload to safely replay a creation. Current permissions are rechecked.
+  /academy/policies:
+    post:
+      tags:
+      - Academy
+      operationId: createAcademyPolicy
+      security:
+      - cookieSession: []
+        csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyPolicyInput'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyPolicy'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+      parameters:
+      - in: header
+        name: Idempotency-Key
+        schema:
+          type: string
+        description: Reuse the same key and payload to safely replay a creation. Current permissions are rechecked.
+  /academy/students/{id}:
+    patch:
+      tags:
+      - Academy
+      operationId: updateAcademyStudent
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyStudentUpdate'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyStudent'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/batches/{id}:
+    patch:
+      tags:
+      - Academy
+      operationId: updateAcademyBatch
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyBatchInput'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyBatch'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/enrolments/{id}:
+    patch:
+      tags:
+      - Academy
+      operationId: updateAcademyEnrolment
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyEnrolmentUpdate'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyEnrolment'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/leads/{id}:
+    patch:
+      tags:
+      - Academy
+      operationId: updateAcademyLead
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyLeadUpdate'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyLead'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/trial-bookings/{id}:
+    patch:
+      tags:
+      - Academy
+      operationId: updateAcademyTrialBooking
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyTrialUpdate'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyTrialBooking'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/leads/{id}/convert:
+    post:
+      tags:
+      - Academy
+      operationId: convertAcademyLead
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyConversionInput'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyLead'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/trial-slots:
+    post:
+      tags:
+      - Academy
+      operationId: createAcademyTrialSlot
+      security:
+      - cookieSession: []
+        csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyTrialSlotInput'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyTrialSlot'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+      parameters:
+      - in: header
+        name: Idempotency-Key
+        schema:
+          type: string
+        description: Reuse the same key and payload to safely replay a creation. Current permissions are rechecked.
+  /academy/settings:
+    put:
+      tags:
+      - Academy
+      operationId: saveAcademySettings
+      security:
+      - cookieSession: []
+        csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademySettings'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademySettings'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/students/{studentId}/consent:
+    post:
+      tags:
+      - Academy
+      operationId: recordAcademyConsent
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - in: path
+        name: studentId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyConsentInput'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyConsentResult'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/students/{studentId}/access-code:
+    post:
+      tags:
+      - Academy
+      operationId: issueAcademyAccessCode
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - in: path
+        name: studentId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyAccessCode'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/classes/preview:
+    post:
+      tags:
+      - Academy
+      operationId: previewAcademySchedule
+      security:
+      - cookieSession: []
+        csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyClassInput'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyClassResult'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/classes:
+    post:
+      tags:
+      - Academy
+      operationId: createAcademySchedule
+      security:
+      - cookieSession: []
+        csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyClassInput'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyClassResult'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/classes/{classId}:
+    patch:
+      tags:
+      - Academy
+      operationId: updateAcademyClass
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - in: path
+        name: classId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyClassInput'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyClass'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/classes/{classId}/complete:
+    post:
+      tags:
+      - Academy
+      operationId: completeAcademyClass
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - in: path
+        name: classId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyCompletionInput'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyClass'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/classes/{classId}/cancel-preview:
+    post:
+      tags:
+      - Academy
+      operationId: previewCancellationAcademyClass
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - in: path
+        name: classId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyCancellationInput'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyCancellationPreview'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/classes/{classId}/cancel:
+    post:
+      tags:
+      - Academy
+      operationId: cancelAcademyClass
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - in: path
+        name: classId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyCancellationInput'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyCancellationPreview'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /learning/workspace:
+    get:
+      tags:
+      - Learning
+      operationId: getLearningWorkspace
+      security:
+      - cookieSession: []
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningWorkspace'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+      parameters:
+      - *id001
+  /learning/actions:
+    post:
+      tags:
+      - Learning
+      operationId: executeLearningAction
+      security:
+      - cookieSession: []
+        csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LearningCommand'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningWorkspace'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+      parameters:
+      - in: header
+        name: Idempotency-Key
+        schema:
+          type: string
+        description: Reuse the same key and payload to safely replay a creation. Current permissions are rechecked.
+  /learning/files:
+    post:
+      tags:
+      - Learning
+      operationId: uploadLearningFile
+      security:
+      - cookieSession: []
+        csrfToken: []
+      responses:
+        '201':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningUploadResult'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                title:
+                  type: string
+                visibility:
+                  type: string
+                levelSlug:
+                  type: string
+                tags:
+                  type: string
+                assignmentId:
+                  type: string
+                certificateId:
+                  type: string
+      parameters:
+      - in: header
+        name: Idempotency-Key
+        schema:
+          type: string
+        description: Reuse the same key and payload to safely replay a creation. Current permissions are rechecked.
+  /learning/files/{fileId}/download:
+    get:
+      tags:
+      - Learning
+      operationId: downloadLearningFile
+      security:
+      - cookieSession: []
+      parameters:
+      - in: path
+        name: fileId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Private clean object, reauthorized against current account relationships.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+            application/x-chess-pgn:
+              schema:
+                type: string
+                format: binary
+            text/plain:
+              schema:
+                type: string
+                format: binary
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+            image/png:
+              schema:
+                type: string
+                format: binary
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /auth/session/restore:
+    post:
+      tags:
+      - Auth
+      operationId: restoreRememberedSession
+      security:
+      - rememberedDevice: []
+        csrfToken: []
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatedSession'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+      description: Restore a finite access session using the HttpOnly remembered-device credential and stable device
+        CSRF token returned by GET /auth/session. Original MFA assurance timestamp is preserved.
+  /auth/session:
+    get:
+      tags:
+      - Auth
+      operationId: getAuthSession
+      responses:
+        '200':
+          description: Current session with stable CSRF token, remembered-device restoration availability, or a
+            confirmed unauthenticated result. Service failures return 503.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/AuthenticatedSession'
+                - $ref: '#/components/schemas/UnauthenticatedSession'
+  /auth/session/refresh:
+    post:
+      tags:
+      - Auth
+      operationId: refreshAuthSession
+      security:
+      - cookieSession: []
+        csrfToken: []
+      responses:
+        '200':
+          description: Rotated opaque session and CSRF token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatedSession'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+  /auth/sessions:
+    get:
+      tags:
+      - Auth
+      operationId: listAuthSessions
+      security:
+      - cookieSession: []
+      responses:
+        '200':
+          description: Active session devices for the current user; no credential material is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionList'
+        '401':
+          $ref: '#/components/responses/Problem'
+    delete:
+      tags:
+      - Auth
+      operationId: revokeAllAuthSessions
+      security:
+      - cookieSession: []
+        csrfToken: []
+      responses:
+        '204':
+          description: Every active session for the current user was revoked.
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+  /auth/sessions/{sessionId}:
+    delete:
+      tags:
+      - Auth
+      operationId: revokeAuthSession
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - in: path
+        name: sessionId
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUIDv7'
+      responses:
+        '204':
+          description: The owned session was revoked
+          or was already inactive.: null
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+  /auth/sessions/revoke-others:
+    post:
+      tags:
+      - Auth
+      operationId: revokeOtherAuthSessions
+      security:
+      - cookieSession: []
+        csrfToken: []
+      responses:
+        '204':
+          description: Every other active session for the current user was revoked.
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+  /auth/mfa/status:
+    get:
+      tags:
+      - Auth
+      operationId: getMFAStatus
+      security:
+      - cookieSession: []
+      responses:
+        '200':
+          description: MFA enrollment and assurance state for the primary-factor session.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MFAStatus'
+        '401':
+          $ref: '#/components/responses/Problem'
+  /auth/mfa/totp/enrollment:
+    post:
+      tags:
+      - Auth
+      operationId: startTOTPEnrollment
+      security:
+      - cookieSession: []
+        csrfToken: []
+      responses:
+        '201':
+          description: A pending authenticator secret. The plaintext secret is returned by this response only.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TOTPEnrollment'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+  /auth/mfa/totp/enrollment/confirm:
+    post:
+      tags:
+      - Auth
+      operationId: confirmTOTPEnrollment
+      security:
+      - cookieSession: []
+        csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+              - code
+              properties:
+                code:
+                  type: string
+                  pattern: ^[0-9]{6}$
+      responses:
+        '200':
+          description: Enrollment confirmed, primary session rotated, and one-time recovery codes issued.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MFAEnrollmentCompletion'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+  /auth/mfa/challenge:
+    post:
+      tags:
+      - Auth
+      operationId: completeMFAChallenge
+      security:
+      - cookieSession: []
+        csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                code:
+                  type: string
+                  pattern: ^[0-9]{6}$
+                recoveryCode:
+                  type: string
+              oneOf:
+              - required:
+                - code
+              - required:
+                - recoveryCode
+      responses:
+        '200':
+          description: MFA assurance completed or refreshed and the current session atomically rotated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatedSession'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+  /auth/mfa/users/{userId}/reset:
+    post:
+      tags:
+      - Auth
+      operationId: resetUserMFA
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - in: path
+        name: userId
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUIDReference'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+              - reason
+              properties:
+                reason:
+                  type: string
+                  minLength: 12
+                  maxLength: 500
+      responses:
+        '204':
+          description: The authorized administrator disabled the factor and revoked the target user's sessions.
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+  /auth/password/login:
+    post:
+      tags:
+      - Auth
+      operationId: loginPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+              - login
+              - password
+              properties:
+                login:
+                  type: string
+                  maxLength: 254
+                password:
+                  type: string
+                  format: password
+                  maxLength: 128
+      responses:
+        '200':
+          description: Primary sign-in completed; staff must complete MFA before accessing protected routes.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/AuthenticatedSession'
+                - $ref: '#/components/schemas/UnauthenticatedSession'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '429':
+          $ref: '#/components/responses/Problem'
+  /auth/password/register:
+    post:
+      tags:
+      - Auth
+      operationId: registerPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+              - email
+              - username
+              - displayName
+              - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  maxLength: 254
+                username:
+                  type: string
+                  minLength: 3
+                  maxLength: 32
+                displayName:
+                  type: string
+                  minLength: 1
+                  maxLength: 100
+                password:
+                  type: string
+                  format: password
+                  minLength: 12
+                  maxLength: 128
+                redirectPath:
+                  type: string
+      responses:
+        '202':
+          description: Verification email sent. No account or session exists until the link is consumed.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - status
+                - message
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/Problem'
+        '429':
+          $ref: '#/components/responses/Problem'
+  /auth/password/verify:
+    get:
+      tags:
+      - Auth
+      operationId: verifyPasswordRegistration
+      parameters:
+      - in: query
+        name: token
+        required: true
+        schema:
+          type: string
+      responses:
+        '303':
+          description: Consumes verification once, creates a guardian account and sets its session cookie; invalid
+            or conflicting registrations redirect to sign-in.
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
+  /auth/google/config:
+    get:
+      tags:
+      - Auth
+      operationId: googleConfiguration
+      responses:
+        '200':
+          description: Google client ID and browser-bound one-time nonce when enabled. Sets an HttpOnly challenge
+            cookie; never cache.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - enabled
+                properties:
+                  enabled:
+                    type: boolean
+                  clientId:
+                    type: string
+                  nonce:
+                    type: string
+        '429':
+          $ref: '#/components/responses/Problem'
+  /auth/google:
+    post:
+      tags:
+      - Auth
+      operationId: loginGoogle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+              - credential
+              properties:
+                credential:
+                  type: string
+                  maxLength: 16384
+      responses:
+        '200':
+          description: Verified Google primary sign-in; staff still require MFA.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/AuthenticatedSession'
+                - $ref: '#/components/schemas/UnauthenticatedSession'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '429':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+  /auth/magic-links:
+    post:
+      tags:
+      - Auth
+      operationId: requestMagicLink
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+              - email
+              properties:
+                email:
+                  type: string
+                  format: email
+                redirectPath:
+                  type: string
+                  example: /portal
+      responses:
+        '202':
+          description: Generic response that does not reveal account existence.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - status
+                - message
+                properties:
+                  status:
+                    type: string
+                    const: accepted
+                  message:
+                    type: string
+  /auth/magic-links/consume:
+    get:
+      tags:
+      - Auth
+      operationId: consumeMagicLink
+      parameters:
+      - in: query
+        name: token
+        required: true
+        schema:
+          type: string
+      responses:
+        '303':
+          description: Sets a host-only opaque session cookie and redirects to the clean web URL.
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
+  /auth/student-codes/exchange:
+    post:
+      tags:
+      - Auth
+      operationId: exchangeStudentCode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+              - code
+              properties:
+                code:
+                  type: string
+                  minLength: 12
+      responses:
+        '200':
+          description: New student session.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatedSession'
+        '401':
+          $ref: '#/components/responses/Problem'
+  /auth/logout:
+    post:
+      tags:
+      - Auth
+      operationId: logout
+      security:
+      - cookieSession: []
+        csrfToken: []
+      responses:
+        '204':
+          description: Session revoked and cookie cleared.
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+  /me:
+    get:
+      tags:
+      - Auth
+      operationId: getMe
+      security:
+      - cookieSession: []
+      responses:
+        '200':
+          description: Authenticated user identity.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatedIdentity'
+        '401':
+          $ref: '#/components/responses/Problem'
+  /realtime/join-tickets:
+    post:
+      tags:
+      - Auth
+      operationId: createRealtimeJoinTicket
+      security:
+      - cookieSession: []
+        csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+              - classSessionId
+              properties:
+                classSessionId:
+                  $ref: '#/components/schemas/UUIDReference'
+      responses:
+        '201':
+          description: Short-lived single-use first-frame join ticket.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                - ticket
+                - expiresAt
+                properties:
+                  ticket:
+                    type: string
+                  expiresAt:
+                    type: string
+                    format: date-time
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+  /public/organization:
+    get:
+      tags:
+      - Public
+      operationId: getOrganization
+      responses:
+        '200':
+          description: Public academy identity and contact details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+  /public/policies:
+    get:
+      tags:
+      - Public
+      operationId: listPolicies
+      responses:
+        '200':
+          description: Effective published policies.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PolicySummary'
+  /public/policies/{slug}:
+    get:
+      tags:
+      - Public
+      operationId: getPolicy
+      parameters:
+      - in: path
+        name: slug
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Effective published policy content.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Policy'
+        '404':
+          $ref: '#/components/responses/Problem'
+  /public/policies/{slug}/versions/{version}:
+    get:
+      tags:
+      - Public
+      operationId: getPolicyVersion
+      parameters:
+      - in: path
+        name: slug
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: version
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Immutable published policy version.
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+                const: public, max-age=31536000, immutable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Policy'
+        '404':
+          $ref: '#/components/responses/Problem'
+  /public/programs:
+    get:
+      tags:
+      - Public
+      operationId: listPrograms
+      responses:
+        '200':
+          description: Active public programs.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgramList'
+  /public/coaches:
+    get:
+      tags:
+      - Public
+      operationId: listCoaches
+      responses:
+        '200':
+          description: Verified public coach profiles only.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoachList'
+  /public/curriculum:
+    get:
+      tags:
+      - Public
+      operationId: getCurriculum
+      responses:
+        '200':
+          description: Current published curriculum.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Curriculum'
+  /public/pricing:
+    get:
+      tags:
+      - Public
+      operationId: listPricing
+      parameters:
+      - in: query
+        name: currency
+        schema:
+          type: string
+          pattern: ^[A-Z]{3}$
+          default: INR
+      responses:
+        '200':
+          description: Active plan prices; integer minor units are authoritative.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingList'
+  /public/leads:
+    post:
+      tags:
+      - Public
+      operationId: createLead
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLead'
+      responses:
+        '201':
+          description: Lead created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadReceipt'
+        '200':
+          description: Existing lead updated without disclosing duplicate details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadReceipt'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /public/trial-slots:
+    get:
+      tags:
+      - Public
+      operationId: listTrialSlots
+      parameters:
+      - in: query
+        name: from
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: to
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: format
+        schema:
+          $ref: '#/components/schemas/TrialFormat'
+      - in: query
+        name: ageBand
+        schema:
+          $ref: '#/components/schemas/AgeBand'
+      - in: query
+        name: timezone
+        schema:
+          type: string
+          default: UTC
+      responses:
+        '200':
+          description: Slots with positive live capacity.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TrialSlot'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /public/trial-bookings:
+    post:
+      tags:
+      - Public
+      operationId: bookTrial
+      parameters:
+      - in: header
+        name: Idempotency-Key
+        required: true
+        schema:
+          type: string
+          minLength: 16
+          maxLength: 255
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTrialBooking'
+      responses:
+        '201':
+          description: Confirmed booking (or the original idempotent result).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrialBooking'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /families/{familyId}/guardian-relationships:
+    post:
+      tags:
+      - Families
+      operationId: createGuardianRelationship
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - $ref: '#/components/parameters/FamilyId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGuardianRelationship'
+      responses:
+        '201':
+          description: Guardian access granted for one student in the family.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuardianRelationship'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /families/{familyId}/guardian-relationships/{relationshipId}/permissions:
+    patch:
+      tags:
+      - Families
+      operationId: replaceGuardianRelationshipPermissions
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - $ref: '#/components/parameters/FamilyId'
+      - $ref: '#/components/parameters/RelationshipId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplaceGuardianPermissions'
+      responses:
+        '200':
+          description: Guardian permissions replaced at the requested optimistic version.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuardianRelationship'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /families/{familyId}/guardian-relationships/{relationshipId}/revoke:
+    post:
+      tags:
+      - Families
+      operationId: revokeGuardianRelationship
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - $ref: '#/components/parameters/FamilyId'
+      - $ref: '#/components/parameters/RelationshipId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionedReason'
+      responses:
+        '200':
+          description: Guardian access revoked without deleting its audit history.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuardianRelationship'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /reports/monthly:
+    post:
+      tags:
+      - Reports
+      operationId: createMonthlyReport
+      security:
+      - cookieSession: []
+        csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMonthlyReport'
+      responses:
+        '201':
+          description: Monthly report draft created by an assigned coach or scoped staff member.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MonthlyReport'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /reports/{reportId}/versions/{versionId}:
+    patch:
+      tags:
+      - Reports
+      operationId: editMonthlyReportDraft
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - $ref: '#/components/parameters/ReportId'
+      - $ref: '#/components/parameters/ReportVersionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditMonthlyReport'
+      responses:
+        '200':
+          description: Draft content updated; published versions remain immutable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MonthlyReport'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /reports/{reportId}/versions/{versionId}/publish:
+    post:
+      tags:
+      - Reports
+      operationId: publishMonthlyReport
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - $ref: '#/components/parameters/ReportId'
+      - $ref: '#/components/parameters/ReportVersionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionMutation'
+      responses:
+        '200':
+          description: Academically approved immutable report version.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MonthlyReport'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /reports/{reportId}/corrections:
+    post:
+      tags:
+      - Reports
+      operationId: startMonthlyReportCorrection
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - $ref: '#/components/parameters/ReportId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReportCorrection'
+      responses:
+        '200':
+          description: New draft correction linked to an immutable source version.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MonthlyReport'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /reports/{reportId}/versions/{versionId}/view:
+    post:
+      tags:
+      - Reports
+      operationId: recordMonthlyReportView
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - $ref: '#/components/parameters/ReportId'
+      - $ref: '#/components/parameters/ReportVersionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionMutation'
+      responses:
+        '200':
+          description: Idempotent view receipt for the authenticated actor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MonthlyReport'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /reports/{reportId}/versions/{versionId}/acknowledge:
+    post:
+      tags:
+      - Reports
+      operationId: acknowledgeMonthlyReport
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - $ref: '#/components/parameters/ReportId'
+      - $ref: '#/components/parameters/ReportVersionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionMutation'
+      responses:
+        '200':
+          description: Idempotent guardian acknowledgement receipt.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MonthlyReport'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /entitlements/accounts/{accountId}:
+    get:
+      tags:
+      - Entitlements
+      operationId: getEntitlementAccount
+      description: Returns the current balance derived from the immutable ledger.
+      security:
+      - cookieSession: []
+      parameters:
+      - $ref: '#/components/parameters/EntitlementAccountId'
+      responses:
+        '200':
+          description: Authorized entitlement account and current bucket balances.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementAccountBalance'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /entitlements/accounts/{accountId}/entries:
+    get:
+      tags:
+      - Entitlements
+      operationId: listEntitlementEntries
+      description: Lists immutable ledger entries in reverse chronological order.
+      security:
+      - cookieSession: []
+      parameters:
+      - $ref: '#/components/parameters/EntitlementAccountId'
+      - in: query
+        name: cursor
+        schema:
+          type: string
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 50
+      responses:
+        '200':
+          description: Authorized page of entitlement ledger entries.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementEntryPage'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /entitlements/accounts/{accountId}/grants:
+    post:
+      tags:
+      - Entitlements
+      operationId: grantEntitlementUnits
+      description: Audited finance grant. Staff callers must have fresh MFA assurance.
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - $ref: '#/components/parameters/EntitlementAccountId'
+      - in: header
+        name: Idempotency-Key
+        required: true
+        schema:
+          type: string
+          minLength: 16
+          maxLength: 255
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GrantEntitlementUnits'
+      responses:
+        '200':
+          description: Exact replay of an earlier successful grant.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementApplyResult'
+        '201':
+          description: New immutable grant entry committed with its audit event.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitlementApplyResult'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /support/cases:
+    get:
+      tags:
+      - Support
+      operationId: listSupportCases
+      security:
+      - cookieSession: []
+      parameters:
+      - in: query
+        name: familyId
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUIDReference'
+      - in: query
+        name: cursor
+        schema:
+          type: string
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+      responses:
+        '200':
+          description: Family-scoped support case summaries.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportCasePage'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+    post:
+      tags:
+      - Support
+      operationId: createSupportCase
+      security:
+      - cookieSession: []
+        csrfToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSupportCase'
+      responses:
+        '201':
+          description: Support case opened with a customer-visible first message and SLA.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportCase'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /support/cases/{caseId}:
+    get:
+      tags:
+      - Support
+      operationId: getSupportCase
+      description: Family views exclude internal events structurally; authorized operators receive the full timeline.
+      security:
+      - cookieSession: []
+      parameters:
+      - $ref: '#/components/parameters/SupportCaseId'
+      responses:
+        '200':
+          description: Authorized support case timeline.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportCase'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /support/cases/{caseId}/events:
+    post:
+      tags:
+      - Support
+      operationId: appendSupportCaseEvent
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - $ref: '#/components/parameters/SupportCaseId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppendSupportEvent'
+      responses:
+        '200':
+          description: Message appended at the requested optimistic version.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportCase'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /support/cases/{caseId}/assignment:
+    patch:
+      tags:
+      - Support
+      operationId: assignSupportCase
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - $ref: '#/components/parameters/SupportCaseId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignSupportCase'
+      responses:
+        '200':
+          description: Operator assignment committed with an internal audit event.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportCase'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /support/cases/{caseId}/status:
+    patch:
+      tags:
+      - Support
+      operationId: changeSupportCaseStatus
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - $ref: '#/components/parameters/SupportCaseId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeSupportCaseStatus'
+      responses:
+        '200':
+          description: Valid support state transition committed with audit evidence.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportCase'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+  /webhooks/razorpay:
+    post:
+      tags:
+      - Webhooks
+      operationId: receiveRazorpayWebhook
+      description: Signature-verified server callback. Verification uses the exact raw request body before JSON
+        parsing.
+      parameters:
+      - in: header
+        name: X-Razorpay-Event-Id
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 255
+      - in: header
+        name: X-Razorpay-Signature
+        required: true
+        schema:
+          type: string
+          minLength: 64
+          maxLength: 4096
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookEnvelope'
+      responses:
+        '204':
+          description: First verified receipt or identical verified replay accepted.
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '413':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+  /webhooks/resend:
+    post:
+      tags:
+      - Webhooks
+      operationId: receiveResendWebhook
+      description: Svix-compatible signature-verified server callback with timestamp freshness enforcement.
+      parameters:
+      - in: header
+        name: svix-id
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 255
+      - in: header
+        name: svix-timestamp
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+      - in: header
+        name: svix-signature
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 4096
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookEnvelope'
+      responses:
+        '204':
+          description: First verified receipt or identical verified replay accepted.
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '413':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+  /webhooks/daily:
+    post:
+      tags:
+      - Webhooks
+      operationId: receiveDailyWebhook
+      description: HMAC signature-verified server callback, deduplicated using the signed envelope event ID.
+      parameters:
+      - in: header
+        name: X-Webhook-Timestamp
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      - in: header
+        name: X-Webhook-Signature
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 4096
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookEnvelope'
+      responses:
+        '204':
+          description: First verified receipt or identical verified replay accepted.
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '413':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+  /academy/trial-bookings/{id}/reschedule:
+    post:
+      tags:
+      - Academy
+      operationId: rescheduleAcademyTrialBooking
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyTrialReschedule'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyTrialBooking'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/make-ups/{id}/fulfill:
+    post:
+      tags:
+      - Academy
+      operationId: fulfillAcademyMakeUp
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyMakeUpFulfillment'
+      responses:
+        '200':
+          description: Make-up linked to its replacement class.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyMakeUp'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+  /academy/staff/{id}:
+    patch:
+      tags:
+      - Academy
+      operationId: updateAcademyStaff
+      security:
+      - cookieSession: []
+        csrfToken: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcademyStaffUpdate'
+      responses:
+        '200':
+          description: Authorized result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyStaffRecord'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '401':
+          $ref: '#/components/responses/Problem'
+        '403':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+        '422':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
+        '500':
+          $ref: '#/components/responses/Problem'
+components:
+  securitySchemes:
+    rememberedDevice:
+      type: apiKey
+      in: cookie
+      name: kg_session_device
+    cookieSession:
+      type: apiKey
+      in: cookie
+      name: __Host-kg_session
+    csrfToken:
+      type: apiKey
+      in: header
+      name: X-CSRF-Token
+  responses:
+    Problem:
+      description: RFC 9457-style structured problem.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+  parameters:
+    FamilyId:
+      in: path
+      name: familyId
+      required: true
+      schema:
+        $ref: '#/components/schemas/UUIDReference'
+    RelationshipId:
+      in: path
+      name: relationshipId
+      required: true
+      schema:
+        $ref: '#/components/schemas/UUIDReference'
+    ReportId:
+      in: path
+      name: reportId
+      required: true
+      schema:
+        $ref: '#/components/schemas/UUIDReference'
+    ReportVersionId:
+      in: path
+      name: versionId
+      required: true
+      schema:
+        $ref: '#/components/schemas/UUIDReference'
+    EntitlementAccountId:
+      in: path
+      name: accountId
+      required: true
+      schema:
+        $ref: '#/components/schemas/UUIDReference'
+    SupportCaseId:
+      in: path
+      name: caseId
+      required: true
+      schema:
+        $ref: '#/components/schemas/UUIDReference'
+  schemas:
+    AcademyCapabilities:
+      type: object
+      additionalProperties: false
+      required:
+      - manageAcademy
+      - manageScheduling
+      - manageTeaching
+      - manageStaff
+      - managePolicies
+      properties:
+        manageAcademy:
+          type: boolean
+        manageScheduling:
+          type: boolean
+        manageTeaching:
+          type: boolean
+        manageStaff:
+          type: boolean
+        managePolicies:
+          type: boolean
+    AcademyStudent:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - userId
+      - familyId
+      - name
+      - ageBand
+      - timeZone
+      - status
+      - consent
+      - country
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        familyId:
+          type: string
+        name:
+          type: string
+        ageBand:
+          type: string
+        timeZone:
+          type: string
+        status:
+          type: string
+        consent:
+          type: boolean
+        country:
+          type: string
+    AcademyCoach:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    AcademyBatch:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - coachId
+      - format
+      - level
+      - timeZone
+      - capacity
+      - studentIds
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        coachId:
+          type: string
+        format:
+          type: string
+        level:
+          type: string
+        timeZone:
+          type: string
+        capacity:
+          type: integer
+          format: int32
+        studentIds:
+          type: array
+          items:
+            type: string
+    AcademyEnrolment:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - studentId
+      - batchId
+      - accountId
+      - status
+      - available
+      - reserved
+      - consumed
+      - startsAt
+      properties:
+        id:
+          type: string
+        studentId:
+          type: string
+        batchId:
+          type: string
+        accountId:
+          type: string
+        status:
+          type: string
+        available:
+          type: integer
+          format: int64
+        reserved:
+          type: integer
+          format: int64
+        consumed:
+          type: integer
+          format: int64
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+    AcademyClass:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - batchId
+      - title
+      - coachId
+      - coach
+      - format
+      - studentIds
+      - startsAt
+      - endsAt
+      - timeZone
+      - status
+      - revision
+      - notes
+      - meetingUrl
+      - attendance
+      properties:
+        id:
+          type: string
+        batchId:
+          type: string
+        title:
+          type: string
+        coachId:
+          type: string
+        coach:
+          type: string
+        format:
+          type: string
+        studentIds:
+          type: array
+          items:
+            type: string
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type: string
+          format: date-time
+        timeZone:
+          type: string
+        status:
+          type: string
+        revision:
+          type: integer
+          format: int64
+        notes:
+          type: string
+        meetingUrl:
+          type: string
+        attendance:
+          type: object
+          additionalProperties:
+            type: string
+    AcademyPolicy:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - title
+      - version
+      - content
+      properties:
+        id:
+          type: string
+        slug:
+          type: string
+        title:
+          type: string
+        version:
+          type: string
+        content:
+          type: string
+    AcademySettings:
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      - legalName
+      - email
+      properties:
+        name:
+          type: string
+        legalName:
+          type: string
+        email:
+          type: string
+    AcademyWorkspace:
+      type: object
+      additionalProperties: false
+      required:
+      - pagination
+      - makeUps
+      - trialSlots
+      - capabilities
+      - students
+      - coaches
+      - batches
+      - enrolments
+      - classes
+      - policies
+      - settings
+      - profile
+      - availability
+      - workload
+      properties:
+        pagination:
+          $ref: '#/components/schemas/AcademyPagination'
+        makeUps:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademyMakeUp'
+        trialSlots:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademyTrialSlot'
+        capabilities:
+          $ref: '#/components/schemas/AcademyCapabilities'
+        students:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademyStudent'
+        coaches:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademyCoach'
+        batches:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademyBatch'
+        enrolments:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademyEnrolment'
+        classes:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademyClass'
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademyPolicy'
+        settings:
+          $ref: '#/components/schemas/AcademySettings'
+        profile:
+          $ref: '#/components/schemas/AcademyProfile'
+        availability:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademyAvailability'
+        workload:
+          $ref: '#/components/schemas/AcademyWorkload'
+    AcademySavedView:
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      - section
+      - query
+      properties:
+        name:
+          type: string
+        section:
+          type: string
+        query:
+          type: string
+    AcademyProfile:
+      type: object
+      additionalProperties: false
+      required:
+      - displayName
+      - timeZone
+      - savedViews
+      properties:
+        displayName:
+          type: string
+        timeZone:
+          type: string
+        savedViews:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademySavedView'
+    AcademyProfileInput:
+      type: object
+      additionalProperties: false
+      required:
+      - displayName
+      - timeZone
+      properties:
+        displayName:
+          type: string
+        timeZone:
+          type: string
+    AcademyPreferences:
+      type: object
+      additionalProperties: false
+      required:
+      - timeZone
+      - savedViews
+      properties:
+        timeZone:
+          type: string
+        savedViews:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademySavedView'
+    AcademyWorkload:
+      type: object
+      additionalProperties: false
+      required:
+      - months
+      - scheduledClasses
+      - pendingCompletion
+      - completedClasses
+      - completedMinutes
+      properties:
+        months:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademyMonthlyWorkload'
+        scheduledClasses:
+          type: integer
+          format: int32
+        pendingCompletion:
+          type: integer
+          format: int32
+        completedClasses:
+          type: integer
+          format: int32
+        completedMinutes:
+          type: integer
+          format: int32
+    AcademyStudentInput:
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      - ageBand
+      - timeZone
+      - country
+      - guardianEmail
+      - guardianName
+      properties:
+        name:
+          type: string
+        ageBand:
+          type: string
+        timeZone:
+          type: string
+        country:
+          type: string
+        guardianEmail:
+          type: string
+        guardianName:
+          type: string
+    AcademyStaffInput:
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      - email
+      - role
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+    AcademyBatchInput:
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      - coachId
+      - format
+      - level
+      - timeZone
+      - capacity
+      properties:
+        name:
+          type: string
+        coachId:
+          type: string
+        format:
+          type: string
+        level:
+          type: string
+        timeZone:
+          type: string
+        capacity:
+          type: integer
+          format: int32
+        status:
+          type: string
+    AcademyEnrolmentInput:
+      type: object
+      additionalProperties: false
+      required:
+      - studentId
+      - batchId
+      - startsAt
+      properties:
+        studentId:
+          type: string
+        batchId:
+          type: string
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+    AcademyPolicyInput:
+      type: object
+      additionalProperties: false
+      required:
+      - slug
+      - title
+      - version
+      - content
+      properties:
+        slug:
+          type: string
+        title:
+          type: string
+        version:
+          type: string
+        content:
+          type: string
+    AcademyConsentInput:
+      type: object
+      additionalProperties: false
+      required:
+      - policyVersionIds
+      properties:
+        policyVersionIds:
+          type: array
+          items:
+            type: string
+    AcademyAccessCode:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - expiresAt
+      properties:
+        code:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+    AcademyClassInput:
+      type: object
+      additionalProperties: false
+      required:
+      - batchId
+      - title
+      - localStart
+      - timeZone
+      - durationMinutes
+      - occurrences
+      - idempotencyKey
+      properties:
+        batchId:
+          type: string
+        title:
+          type: string
+        localStart:
+          type: string
+        timeZone:
+          type: string
+        durationMinutes:
+          type: integer
+          format: int32
+        occurrences:
+          type: integer
+          format: int32
+        recurringUntil:
+          type: string
+        meetingUrl:
+          type: string
+        idempotencyKey:
+          type: string
+        revision:
+          type: integer
+          format: int64
+        scope:
+          type: string
+    AcademyStudentUpdate:
+      type: object
+      additionalProperties: false
+      required:
+      - name
+      - ageBand
+      - timeZone
+      - country
+      - status
+      properties:
+        name:
+          type: string
+        ageBand:
+          type: string
+        timeZone:
+          type: string
+        country:
+          type: string
+        status:
+          type: string
+    AcademyEnrolmentUpdate:
+      type: object
+      additionalProperties: false
+      required:
+      - status
+      properties:
+        status:
+          type: string
+        endsAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+    AcademyAvailability:
+      type: object
+      additionalProperties: false
+      required:
+      - coachId
+      - startsAt
+      - endsAt
+      - timeZone
+      - status
+      - id
+      properties:
+        id:
+          type: string
+        coachId:
+          type: string
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type: string
+          format: date-time
+        timeZone:
+          type: string
+        status:
+          type: string
+    AcademyLead:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - guardianName
+      - email
+      - phone
+      - ageBand
+      - status
+      - notes
+      - createdAt
+      properties:
+        id:
+          type: string
+        guardianName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        ageBand:
+          type: string
+        status:
+          type: string
+        notes:
+          type: string
+        studentId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    AcademyLeadUpdate:
+      type: object
+      additionalProperties: false
+      required:
+      - status
+      - notes
+      properties:
+        status:
+          type: string
+        notes:
+          type: string
+    AcademyConversionInput:
+      type: object
+      additionalProperties: false
+      required:
+      - studentId
+      properties:
+        studentId:
+          type: string
+    AcademyTrialSlot:
+      type: object
+      additionalProperties: false
+      required:
+      - coachId
+      - startsAt
+      - endsAt
+      - timeZone
+      - format
+      - capacity
+      - ageBands
+      - id
+      - status
+      - availableSeats
+      properties:
+        id:
+          type: string
+        coachId:
+          type: string
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type: string
+          format: date-time
+        timeZone:
+          type: string
+        format:
+          type: string
+        capacity:
+          type: integer
+          format: int32
+        ageBands:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+        availableSeats:
+          type: integer
+          format: int32
+    AcademyTrialBooking:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - slotId
+      - leadId
+      - guardianName
+      - studentName
+      - status
+      - startsAt
+      - endsAt
+      - notes
+      properties:
+        id:
+          type: string
+        slotId:
+          type: string
+        leadId:
+          type: string
+        guardianName:
+          type: string
+        studentName:
+          type: string
+        status:
+          type: string
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type: string
+          format: date-time
+        notes:
+          type: string
+    AcademyTrialUpdate:
+      type: object
+      additionalProperties: false
+      required:
+      - status
+      - notes
+      properties:
+        status:
+          type: string
+        notes:
+          type: string
+    AcademyOperations:
+      type: object
+      additionalProperties: false
+      required:
+      - pagination
+      - leads
+      - trialSlots
+      - trialBookings
+      properties:
+        pagination:
+          $ref: '#/components/schemas/AcademyPagination'
+        leads:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademyLead'
+        trialSlots:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademyTrialSlot'
+        trialBookings:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademyTrialBooking'
+    AcademyClassResult:
+      type: object
+      additionalProperties: false
+      required:
+      - classes
+      properties:
+        classes:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademyClass'
+    AcademyCompletionInput:
+      type: object
+      additionalProperties: false
+      required:
+      - revision
+      - notes
+      - attendance
+      - idempotencyKey
+      properties:
+        revision:
+          type: integer
+          format: int64
+        notes:
+          type: string
+        attendance:
+          type: object
+          additionalProperties:
+            type: string
+        idempotencyKey:
+          type: string
+    AcademyCancellationInput:
+      type: object
+      additionalProperties: false
+      required:
+      - revision
+      - reason
+      - idempotencyKey
+      properties:
+        revision:
+          type: integer
+          format: int64
+        studentId:
+          type: string
+        reason:
+          type: string
+        idempotencyKey:
+          type: string
+    AcademyCancellationPreview:
+      type: object
+      additionalProperties: false
+      required:
+      - classId
+      - revision
+      - outcomes
+      properties:
+        classId:
+          type: string
+        revision:
+          type: integer
+          format: int64
+        outcomes:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademyCancellationOutcome'
+    AcademyCancellationOutcome:
+      type: object
+      additionalProperties: false
+      required:
+      - studentId
+      - action
+      - makeUp
+      - reason
+      properties:
+        studentId:
+          type: string
+        action:
+          type: string
+        makeUp:
+          type: boolean
+        reason:
+          type: string
+    LearningPuzzle:
+      type: object
+      additionalProperties: false
+      required:
+      - title
+      - fen
+      properties:
+        title:
+          type: string
+        fen:
+          type: string
+        solutions:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+    LearningPuzzleProgress:
+      type: object
+      additionalProperties: false
+      required:
+      - moves
+      - incorrect
+      - hints
+      - seconds
+      - solved
+      - revealed
+      - lastActionAt
+      properties:
+        moves:
+          type: array
+          items:
+            type: string
+        incorrect:
+          type: integer
+          format: int32
+        hints:
+          type: integer
+          format: int32
+        seconds:
+          type: integer
+          format: int32
+        solved:
+          type: boolean
+        revealed:
+          type: boolean
+        hint:
+          type: string
+        lastActionAt:
+          type: string
+          format: date-time
+    LearningMetrics:
+      type: object
+      additionalProperties: false
+      required:
+      - inProgress
+      - completed
+      - notSolved
+      - notAttempted
+      - firstTry
+      - incorrect
+      - hints
+      - reveals
+      - seconds
+      - accuracy
+      - averageSeconds
+      properties:
+        inProgress:
+          type: integer
+          format: int32
+        completed:
+          type: integer
+          format: int32
+        notSolved:
+          type: integer
+          format: int32
+        notAttempted:
+          type: integer
+          format: int32
+        firstTry:
+          type: integer
+          format: int32
+        incorrect:
+          type: integer
+          format: int32
+        hints:
+          type: integer
+          format: int32
+        reveals:
+          type: integer
+          format: int32
+        seconds:
+          type: integer
+          format: int32
+        accuracy:
+          type:
+          - number
+          - 'null'
+          format: double
+        averageSeconds:
+          type:
+          - number
+          - 'null'
+          format: double
+    LearningAttempt:
+      type: object
+      additionalProperties: false
+      required:
+      - files
+      - id
+      - number
+      - status
+      - answer
+      - feedback
+      - puzzles
+      - metrics
+      properties:
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningFile'
+        id:
+          type: string
+        number:
+          type: integer
+          format: int32
+        status:
+          type: string
+        answer:
+          type: string
+        feedback:
+          type: string
+        puzzles:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningPuzzleProgress'
+        metrics:
+          $ref: '#/components/schemas/LearningMetrics'
+    LearningAssignment:
+      type: object
+      additionalProperties: false
+      required:
+      - resources
+      - id
+      - studentId
+      - title
+      - description
+      - kind
+      - status
+      - version
+      - dueAt
+      - puzzles
+      - attempts
+      properties:
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningAssignedResource'
+        id:
+          type: string
+        studentId:
+          type: string
+        classId:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        kind:
+          type: string
+        status:
+          type: string
+        version:
+          type: integer
+          format: int32
+        dueAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        puzzles:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningPuzzle'
+        attempts:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningAttempt'
+    LearningStudent:
+      type: object
+      additionalProperties: false
+      required:
+      - levelSlug
+      - id
+      - name
+      - canManage
+      - canSubmit
+      - canCommunicate
+      properties:
+        levelSlug:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        canManage:
+          type: boolean
+        canSubmit:
+          type: boolean
+        canCommunicate:
+          type: boolean
+    LearningResource:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - ownerId
+      - title
+      - kind
+      - visibility
+      - status
+      - levelSlug
+      - tags
+      - content
+      - version
+      properties:
+        fileId:
+          type: string
+        filename:
+          type: string
+        mediaType:
+          type: string
+        id:
+          type: string
+        ownerId:
+          type: string
+        title:
+          type: string
+        kind:
+          type: string
+        visibility:
+          type: string
+        status:
+          type: string
+        levelSlug:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        content:
+          type: string
+        version:
+          type: integer
+          format: int32
+    LearningGame:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - studentId
+      - title
+      - source
+      - pgn
+      - review
+      - shared
+      - playedAt
+      - version
+      properties:
+        id:
+          type: string
+        studentId:
+          type: string
+        title:
+          type: string
+        source:
+          type: string
+        pgn:
+          type: string
+        review:
+          type: string
+        shared:
+          type: boolean
+        playedAt:
+          type: string
+          format: date-time
+        version:
+          type: integer
+          format: int32
+    LearningMessage:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - actorId
+      - actorName
+      - body
+      - createdAt
+      properties:
+        id:
+          type: string
+        actorId:
+          type: string
+        actorName:
+          type: string
+        body:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    LearningThread:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - title
+      - unread
+      - messages
+      - canSend
+      properties:
+        id:
+          type: string
+        studentId:
+          type: string
+        batchId:
+          type: string
+        title:
+          type: string
+        unread:
+          type: integer
+          format: int32
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningMessage'
+        canSend:
+          type: boolean
+    LearningNotification:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - title
+      - href
+      - createdAt
+      - readAt
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        href:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        readAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+    LearningRubric:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - levelSlug
+      - title
+      - version
+      - dimensions
+      properties:
+        id:
+          type: string
+        levelSlug:
+          type: string
+        title:
+          type: string
+        version:
+          type: integer
+          format: int32
+        dimensions:
+          type: array
+          items:
+            type: string
+    LearningRating:
+      type: object
+      additionalProperties: false
+      required:
+      - dimension
+      - rating
+      - evidence
+      properties:
+        dimension:
+          type: string
+        rating:
+          type: string
+        evidence:
+          type: string
+    LearningAssessmentContent:
+      type: object
+      additionalProperties: false
+      required:
+      - learned
+      - strengths
+      - focusNext
+      - practicePlan
+      - coachComment
+      - ratings
+      - eligible
+      properties:
+        learned:
+          type: string
+        strengths:
+          type: string
+        focusNext:
+          type: string
+        practicePlan:
+          type: string
+        coachComment:
+          type: string
+        ratings:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningRating'
+        eligible:
+          type: boolean
+    LearningAssessment:
+      type: object
+      additionalProperties: false
+      required:
+      - reportId
+      - history
+      - id
+      - studentId
+      - rubricId
+      - title
+      - period
+      - content
+      - status
+      - version
+      - publishedAt
+      - acknowledgedAt
+      properties:
+        reportId:
+          type: string
+        sourceVersionId:
+          type: string
+        history:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningAssessmentEvent'
+        id:
+          type: string
+        studentId:
+          type: string
+        rubricId:
+          type: string
+        title:
+          type: string
+        period:
+          type: string
+        content:
+          $ref: '#/components/schemas/LearningAssessmentContent'
+        status:
+          type: string
+        version:
+          type: integer
+          format: int32
+        publishedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        acknowledgedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+    LearningAssessmentEvent:
+      type: object
+      additionalProperties: false
+      required:
+      - action
+      - actorId
+      - at
+      - content
+      properties:
+        action:
+          type: string
+        actorId:
+          type: string
+        at:
+          type: string
+          format: date-time
+        content:
+          type: object
+          additionalProperties: true
+    LearningCertificate:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - studentId
+      - assessmentId
+      - levelSlug
+      - status
+      - issuedAt
+      - reason
+      properties:
+        fileId:
+          type: string
+        id:
+          type: string
+        studentId:
+          type: string
+        assessmentId:
+          type: string
+        levelSlug:
+          type: string
+        status:
+          type: string
+        issuedAt:
+          type: string
+          format: date-time
+        reason:
+          type: string
+    LearningWorkspace:
+      type: object
+      additionalProperties: false
+      required:
+      - pagination
+      - placements
+      - canPlace
+      - students
+      - assignments
+      - resources
+      - games
+      - threads
+      - notifications
+      - rubrics
+      - assessments
+      - certificates
+      - canPublish
+      - canCreateResources
+      properties:
+        pagination:
+          $ref: '#/components/schemas/LearningPagination'
+        placements:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningPlacement'
+        canPlace:
+          type: boolean
+        students:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningStudent'
+        assignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningAssignment'
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningResource'
+        games:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningGame'
+        threads:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningThread'
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningNotification'
+        rubrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningRubric'
+        assessments:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningAssessment'
+        certificates:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningCertificate'
+        canPublish:
+          type: boolean
+        canCreateResources:
+          type: boolean
+    LearningCommand:
+      type: object
+      additionalProperties: false
+      required:
+      - action
+      properties:
+        action:
+          type: string
+          enum:
+          - placeStudent
+          - createAssignment
+          - editAssignment
+          - assignAssignment
+          - closeAssignment
+          - submitAssignment
+          - reviewAssignment
+          - returnAssignment
+          - puzzleMove
+          - puzzleHint
+          - puzzleReveal
+          - createResource
+          - editResource
+          - publishResource
+          - archiveResource
+          - reviseResource
+          - saveGame
+          - reviewGame
+          - createThread
+          - sendMessage
+          - readThread
+          - readNotification
+          - readAllNotifications
+          - createAssessment
+          - editAssessment
+          - submitAssessment
+          - returnAssessment
+          - publishAssessment
+          - acknowledgeAssessment
+          - correctAssessment
+          - issueCertificate
+          - revokeCertificate
+        id:
+          type: string
+        version:
+          type: integer
+          format: int32
+        studentId:
+          type: string
+        studentIds:
+          type: array
+          items:
+            type: string
+        resourceIds:
+          type: array
+          items:
+            type: string
+        assessmentId:
+          type: string
+        batchId:
+          type: string
+        classId:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        kind:
+          type: string
+        status:
+          type: string
+        dueAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        puzzles:
+          type: array
+          items:
+            $ref: '#/components/schemas/LearningPuzzle'
+        answer:
+          type: string
+        feedback:
+          type: string
+        puzzleIndex:
+          type: integer
+          format: int32
+        move:
+          type: string
+        elapsedSeconds:
+          type: integer
+          format: int32
+        visibility:
+          type: string
+        levelSlug:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        content:
+          type: string
+        pgn:
+          type: string
+        source:
+          type: string
+        shared:
+          type: boolean
+        playedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        body:
+          type: string
+        rubricId:
+          type: string
+        period:
+          type: string
+        assessmentContent:
+          $ref: '#/components/schemas/LearningAssessmentContent'
+    LearningFile:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - filename
+      - mediaType
+      - sizeBytes
+      - status
+      properties:
+        id:
+          type: string
+        filename:
+          type: string
+        mediaType:
+          type: string
+        sizeBytes:
+          type: integer
+          format: int64
+        status:
+          type: string
+    LearningUploadResult:
+      type: object
+      additionalProperties: false
+      required:
+      - file
+      - workspace
+      properties:
+        file:
+          $ref: '#/components/schemas/LearningFile'
+        workspace:
+          $ref: '#/components/schemas/LearningWorkspace'
+    AcademyConsentResult:
+      type: object
+      required:
+      - accepted
+      properties:
+        accepted:
+          type: boolean
+    UUIDReference:
+      type: string
+      format: uuid
+      description: Existing record reference; legacy UUIDv4 and current UUIDv7 IDs are supported. New records use UUIDv7.
+      pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[47][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$
+    UUIDv7:
+      type: string
+      format: uuid
+      pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$
+    Role:
+      type: string
+      enum:
+      - guardian
+      - student
+      - coach
+      - academic_manager
+      - operations_admin
+      - finance_admin
+      - super_admin
+    AgeBand:
+      type: string
+      enum:
+      - '4_7'
+      - '8_12'
+      - '13_17'
+      - 18_plus
+    TrialFormat:
+      type: string
+      enum:
+      - group
+      - one_to_one
+    User:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - displayName
+      - roles
+      properties:
+        id:
+          $ref: '#/components/schemas/UUIDReference'
+        email:
+          type: string
+          format: email
+        displayName:
+          type: string
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+    AuthenticatedSession:
+      type: object
+      additionalProperties: false
+      required:
+      - authenticated
+      - csrfToken
+      - user
+      properties:
+        authenticated:
+          type: boolean
+          const: true
+        csrfToken:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+    AuthenticatedIdentity:
+      type: object
+      additionalProperties: false
+      required:
+      - authenticated
+      - user
+      properties:
+        authenticated:
+          type: boolean
+          const: true
+        user:
+          $ref: '#/components/schemas/User'
+    SessionSummary:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - createdAt
+      - lastSeenAt
+      - idleExpiresAt
+      - absoluteExpiresAt
+      - deviceFingerprint
+      - current
+      properties:
+        id:
+          $ref: '#/components/schemas/UUIDv7'
+        createdAt:
+          type: string
+          format: date-time
+        lastSeenAt:
+          type: string
+          format: date-time
+        idleExpiresAt:
+          type: string
+          format: date-time
+        absoluteExpiresAt:
+          type: string
+          format: date-time
+        deviceFingerprint:
+          type: string
+        current:
+          type: boolean
+        remembered:
+          type: boolean
+    SessionList:
+      type: object
+      additionalProperties: false
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SessionSummary'
+    MFAStatus:
+      type: object
+      additionalProperties: false
+      required:
+      - required
+      - enrolled
+      - enrollmentPending
+      - verifiedThisSession
+      - csrfToken
+      properties:
+        required:
+          type: boolean
+        enrolled:
+          type: boolean
+        enrollmentPending:
+          type: boolean
+        verifiedThisSession:
+          type: boolean
+        challengeExpiresAt:
+          type: string
+          format: date-time
+        csrfToken:
+          type: string
+    TOTPEnrollment:
+      type: object
+      additionalProperties: false
+      required:
+      - secret
+      - otpauthUri
+      - expiresAt
+      properties:
+        secret:
+          type: string
+          pattern: ^[A-Z2-7]+$
+        otpauthUri:
+          type: string
+          pattern: ^otpauth://totp/
+        expiresAt:
+          type: string
+          format: date-time
+    MFAEnrollmentCompletion:
+      type: object
+      additionalProperties: false
+      required:
+      - authenticated
+      - csrfToken
+      - user
+      - recoveryCodes
+      properties:
+        authenticated:
+          type: boolean
+          const: true
+        csrfToken:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        recoveryCodes:
+          type: array
+          minItems: 10
+          maxItems: 10
+          items:
+            type: string
+    UnauthenticatedSession:
+      type: object
+      additionalProperties: false
+      required:
+      - authenticated
+      properties:
+        authenticated:
+          type: boolean
+          const: false
+        mfaRequired:
+          type: boolean
+        restoreAvailable:
+          type: boolean
+        csrfToken:
+          type: string
+    FieldError:
+      type: object
+      required:
+      - field
+      - message
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+    WebhookEnvelope:
+      type: object
+      additionalProperties: true
+    Problem:
+      type: object
+      required:
+      - type
+      - title
+      - status
+      - code
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+          minimum: 400
+          maximum: 599
+        detail:
+          type: string
+        code:
+          type: string
+        requestId:
+          type: string
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldError'
+    Organization:
+      type: object
+      required:
+      - name
+      - canonicalUrl
+      - socialLinks
+      - updatedAt
+      properties:
+        name:
+          type: string
+        legalName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        whatsApp:
+          type: string
+        address:
+          type: string
+        canonicalUrl:
+          type: string
+          format: uri
+        socialLinks:
+          type: object
+          additionalProperties:
+            type: string
+            format: uri
+        updatedAt:
+          type: string
+          format: date-time
+    PolicySummary:
+      type: object
+      required:
+      - slug
+      - title
+      - version
+      - effectiveAt
+      - purpose
+      properties:
+        slug:
+          type: string
+        title:
+          type: string
+        version:
+          type: string
+        effectiveAt:
+          type: string
+          format: date-time
+        purpose:
+          type: string
+    Policy:
+      allOf:
+      - $ref: '#/components/schemas/PolicySummary'
+      - type: object
+        required:
+        - contentHtml
+        - contentHash
+        - locale
+        properties:
+          contentHtml:
+            type: string
+          contentHash:
+            type: string
+          locale:
+            type: string
+    Money:
+      type: object
+      required:
+      - amountMinor
+      - currency
+      properties:
+        amountMinor:
+          type: integer
+          format: int64
+          minimum: 0
+        currency:
+          type: string
+          pattern: ^[A-Z]{3}$
+        interval:
+          type: string
+    Program:
+      type: object
+      required:
+      - id
+      - slug
+      - name
+      - summary
+      - formats
+      - ageBands
+      - levelSlugs
+      properties:
+        id:
+          $ref: '#/components/schemas/UUIDReference'
+        slug:
+          type: string
+        name:
+          type: string
+        summary:
+          type: string
+        formats:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrialFormat'
+        ageBands:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgeBand'
+        levelSlugs:
+          type: array
+          items:
+            type: string
+        capacity:
+          type: integer
+          minimum: 1
+        durationMinutes:
+          type: integer
+          minimum: 1
+        startingPrice:
+          $ref: '#/components/schemas/Money'
+    ProgramList:
+      type: object
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Program'
+    Coach:
+      type: object
+      required:
+      - id
+      - slug
+      - displayName
+      - bio
+      - languages
+      properties:
+        id:
+          $ref: '#/components/schemas/UUIDReference'
+        slug:
+          type: string
+        displayName:
+          type: string
+        bio:
+          type: string
+        languages:
+          type: array
+          items:
+            type: string
+        title:
+          type: string
+        rating:
+          type: integer
+          minimum: 0
+          maximum: 4000
+        ratingSource:
+          type: string
+        photoUrl:
+          type: string
+          format: uri
+        verifiedAt:
+          type: string
+          format: date-time
+    CoachList:
+      type: object
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Coach'
+    Level:
+      type: object
+      required:
+      - slug
+      - name
+      - summary
+      - outcomes
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        summary:
+          type: string
+        ageGuidance:
+          type: string
+        ratingGuidance:
+          type: string
+        outcomes:
+          type: array
+          items:
+            type: string
+    Track:
+      type: object
+      required:
+      - slug
+      - name
+      - summary
+      - levels
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        summary:
+          type: string
+        levels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Level'
+    Curriculum:
+      type: object
+      required:
+      - version
+      - tracks
+      properties:
+        version:
+          type: string
+        tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Track'
+    Price:
+      type: object
+      required:
+      - planId
+      - programSlug
+      - name
+      - format
+      - billingModel
+      - amountMinor
+      - taxInclusive
+      - features
+      properties:
+        planId:
+          $ref: '#/components/schemas/UUIDReference'
+        programSlug:
+          type: string
+        name:
+          type: string
+        format:
+          $ref: '#/components/schemas/TrialFormat'
+        billingModel:
+          type: string
+        amountMinor:
+          type: integer
+          format: int64
+          minimum: 0
+        interval:
+          type: string
+        classQuantity:
+          type: integer
+          minimum: 1
+        capacity:
+          type: integer
+          minimum: 1
+        taxInclusive:
+          type: boolean
+        features:
+          type: array
+          items:
+            type: string
+    PricingList:
+      type: object
+      required:
+      - currency
+      - items
+      properties:
+        currency:
+          type: string
+          pattern: ^[A-Z]{3}$
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Price'
+    CreateLead:
+      type: object
+      additionalProperties: false
+      required:
+      - guardianName
+      - studentAgeBand
+      - country
+      - timeZone
+      - contactConsent
+      anyOf:
+      - required:
+        - email
+      - required:
+        - phone
+      properties:
+        guardianName:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+          pattern: ^\+[1-9][0-9]{7,14}$
+        studentAgeBand:
+          $ref: '#/components/schemas/AgeBand'
+        experience:
+          type: string
+        rating:
+          type: integer
+          minimum: 0
+          maximum: 4000
+        country:
+          type: string
+          pattern: ^[A-Z]{2}$
+        timeZone:
+          type: string
+        preferredFormat:
+          $ref: '#/components/schemas/TrialFormat'
+        preferredTimes:
+          type: array
+          items:
+            type: string
+        contactConsent:
+          type: boolean
+          const: true
+        marketingConsent:
+          type: boolean
+          default: false
+        source:
+          type: string
+        campaign:
+          type: string
+        medium:
+          type: string
+        term:
+          type: string
+        content:
+          type: string
+        landingPage:
+          type: string
+        referrer:
+          type: string
+    LeadReceipt:
+      type: object
+      required:
+      - id
+      - status
+      - createdAt
+      properties:
+        id:
+          $ref: '#/components/schemas/UUIDReference'
+        status:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    TrialSlot:
+      type: object
+      required:
+      - id
+      - startsAt
+      - endsAt
+      - timeZone
+      - format
+      - ageBands
+      - levelSlugs
+      - availableSeats
+      properties:
+        id:
+          $ref: '#/components/schemas/UUIDReference'
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type: string
+          format: date-time
+        timeZone:
+          type: string
+        format:
+          $ref: '#/components/schemas/TrialFormat'
+        ageBands:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgeBand'
+        levelSlugs:
+          type: array
+          items:
+            type: string
+        availableSeats:
+          type: integer
+          minimum: 1
+    CreateTrialBooking:
+      type: object
+      additionalProperties: false
+      required:
+      - slotId
+      - leadId
+      - guardianName
+      - email
+      - studentAgeBand
+      - timeZone
+      - contactConsent
+      properties:
+        slotId:
+          $ref: '#/components/schemas/UUIDReference'
+        leadId:
+          $ref: '#/components/schemas/UUIDReference'
+        guardianName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        studentName:
+          type: string
+        studentAgeBand:
+          $ref: '#/components/schemas/AgeBand'
+        timeZone:
+          type: string
+        contactConsent:
+          type: boolean
+          const: true
+    TrialBooking:
+      type: object
+      required:
+      - id
+      - slotId
+      - leadId
+      - status
+      - startsAt
+      - endsAt
+      - timeZone
+      - createdAt
+      properties:
+        id:
+          $ref: '#/components/schemas/UUIDReference'
+        slotId:
+          $ref: '#/components/schemas/UUIDReference'
+        leadId:
+          $ref: '#/components/schemas/UUIDReference'
+        status:
+          type: string
+          const: confirmed
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type: string
+          format: date-time
+        timeZone:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    GuardianPermission:
+      type: string
+      enum:
+      - view_profile
+      - manage_profile
+      - view_schedule
+      - manage_schedule
+      - join_class
+      - view_progress
+      - manage_consent
+      - manage_billing
+      - manage_guardians
+      - communicate_with_academy
+    CreateGuardianRelationship:
+      type: object
+      additionalProperties: false
+      required:
+      - guardianId
+      - studentId
+      - permissions
+      properties:
+        guardianId:
+          $ref: '#/components/schemas/UUIDReference'
+        studentId:
+          $ref: '#/components/schemas/UUIDReference'
+        permissions:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/GuardianPermission'
+    ReplaceGuardianPermissions:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - permissions
+      - reason
+      properties:
+        version:
+          type: integer
+          format: int64
+          minimum: 1
+        permissions:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/GuardianPermission'
+        reason:
+          type: string
+          minLength: 1
+    VersionedReason:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - reason
+      properties:
+        version:
+          type: integer
+          format: int64
+          minimum: 1
+        reason:
+          type: string
+          minLength: 1
+    GuardianRelationship:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - familyId
+      - guardianId
+      - studentId
+      - permissions
+      - status
+      - version
+      - grantedAt
+      properties:
+        id:
+          $ref: '#/components/schemas/UUIDReference'
+        familyId:
+          $ref: '#/components/schemas/UUIDReference'
+        guardianId:
+          $ref: '#/components/schemas/UUIDReference'
+        studentId:
+          $ref: '#/components/schemas/UUIDReference'
+        permissions:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/GuardianPermission'
+        status:
+          type: string
+          enum:
+          - active
+          - revoked
+        version:
+          type: integer
+          format: int64
+          minimum: 1
+        grantedAt:
+          type: string
+          format: date-time
+        revokedAt:
+          type: string
+          format: date-time
+    ReportSection:
+      type: object
+      additionalProperties: false
+      properties:
+        text:
+          type: string
+          minLength: 1
+        omittedReason:
+          type: string
+          minLength: 1
+      oneOf:
+      - required:
+        - text
+      - required:
+        - omittedReason
+    MonthlyReportContent:
+      type: object
+      additionalProperties: false
+      required:
+      - learned
+      - strengths
+      - focusNext
+      - practicePlan
+      - coachComment
+      properties:
+        learned:
+          $ref: '#/components/schemas/ReportSection'
+        strengths:
+          $ref: '#/components/schemas/ReportSection'
+        focusNext:
+          $ref: '#/components/schemas/ReportSection'
+        practicePlan:
+          $ref: '#/components/schemas/ReportSection'
+        coachComment:
+          $ref: '#/components/schemas/ReportSection'
+    CreateMonthlyReport:
+      type: object
+      additionalProperties: false
+      required:
+      - studentId
+      - year
+      - month
+      - rubricVersionId
+      - content
+      properties:
+        studentId:
+          $ref: '#/components/schemas/UUIDReference'
+        year:
+          type: integer
+          minimum: 1
+        month:
+          type: integer
+          minimum: 1
+          maximum: 12
+        rubricVersionId:
+          $ref: '#/components/schemas/UUIDReference'
+        content:
+          $ref: '#/components/schemas/MonthlyReportContent'
+    EditMonthlyReport:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - content
+      properties:
+        version:
+          type: integer
+          format: int64
+          minimum: 1
+        content:
+          $ref: '#/components/schemas/MonthlyReportContent'
+    VersionMutation:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      properties:
+        version:
+          type: integer
+          format: int64
+          minimum: 1
+    CreateReportCorrection:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - sourceVersionId
+      properties:
+        version:
+          type: integer
+          format: int64
+          minimum: 1
+        sourceVersionId:
+          $ref: '#/components/schemas/UUIDReference'
+    MonthlyReportVersion:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - number
+      - status
+      - content
+      - rubricVersionId
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          $ref: '#/components/schemas/UUIDReference'
+        number:
+          type: integer
+          minimum: 1
+        status:
+          type: string
+          enum:
+          - draft
+          - published
+        content:
+          $ref: '#/components/schemas/MonthlyReportContent'
+        rubricVersionId:
+          $ref: '#/components/schemas/UUIDReference'
+        sourceVersionId:
+          $ref: '#/components/schemas/UUIDReference'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        publishedAt:
+          type: string
+          format: date-time
+    MonthlyReportReceipt:
+      type: object
+      additionalProperties: false
+      required:
+      - versionId
+      - viewerId
+      - firstViewedAt
+      properties:
+        versionId:
+          $ref: '#/components/schemas/UUIDReference'
+        viewerId:
+          $ref: '#/components/schemas/UUIDReference'
+        firstViewedAt:
+          type: string
+          format: date-time
+        acknowledgedAt:
+          type: string
+          format: date-time
+    MonthlyReport:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - studentId
+      - periodStart
+      - periodEnd
+      - version
+      - versions
+      - receipts
+      properties:
+        id:
+          $ref: '#/components/schemas/UUIDReference'
+        studentId:
+          $ref: '#/components/schemas/UUIDReference'
+        periodStart:
+          type: string
+          format: date-time
+        periodEnd:
+          type: string
+          format: date-time
+        version:
+          type: integer
+          format: int64
+          minimum: 1
+        versions:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/MonthlyReportVersion'
+        receipts:
+          type: array
+          items:
+            $ref: '#/components/schemas/MonthlyReportReceipt'
+    EntitlementAccount:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - enrolmentId
+      - studentId
+      - unit
+      - createdAt
+      properties:
+        id:
+          $ref: '#/components/schemas/UUIDReference'
+        enrolmentId:
+          $ref: '#/components/schemas/UUIDReference'
+        studentId:
+          $ref: '#/components/schemas/UUIDReference'
+        unit:
+          type: string
+          example: session_credit
+        createdAt:
+          type: string
+          format: date-time
+    EntitlementBalance:
+      type: object
+      additionalProperties: false
+      required:
+      - available
+      - reserved
+      - consumed
+      properties:
+        available:
+          type: integer
+          format: int64
+          minimum: 0
+        reserved:
+          type: integer
+          format: int64
+          minimum: 0
+        consumed:
+          type: integer
+          format: int64
+          minimum: 0
+    EntitlementDelta:
+      type: object
+      additionalProperties: false
+      required:
+      - available
+      - reserved
+      - consumed
+      properties:
+        available:
+          type: integer
+          format: int64
+        reserved:
+          type: integer
+          format: int64
+        consumed:
+          type: integer
+          format: int64
+    EntitlementAccountBalance:
+      type: object
+      additionalProperties: false
+      required:
+      - account
+      - balance
+      properties:
+        account:
+          $ref: '#/components/schemas/EntitlementAccount'
+        balance:
+          $ref: '#/components/schemas/EntitlementBalance'
+    EntitlementEntry:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - accountId
+      - studentId
+      - kind
+      - delta
+      - referenceType
+      - referenceId
+      - reason
+      - actorId
+      - occurredAt
+      properties:
+        id:
+          $ref: '#/components/schemas/UUIDReference'
+        accountId:
+          $ref: '#/components/schemas/UUIDReference'
+        studentId:
+          $ref: '#/components/schemas/UUIDReference'
+        kind:
+          type: string
+          enum:
+          - purchased
+          - granted
+          - reserved
+          - consumed
+          - released
+          - reversed
+          - expired
+          - refunded
+          - adjusted
+        delta:
+          $ref: '#/components/schemas/EntitlementDelta'
+        referenceType:
+          type: string
+          pattern: ^[a-z][a-z0-9_]{0,63}$
+        referenceId:
+          type: string
+          minLength: 1
+          maxLength: 255
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 500
+        actorId:
+          oneOf:
+          - $ref: '#/components/schemas/UUIDReference'
+          - type: string
+            const: system
+        occurredAt:
+          type: string
+          format: date-time
+    EntitlementEntryPage:
+      type: object
+      additionalProperties: false
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntitlementEntry'
+        nextCursor:
+          type: string
+    GrantEntitlementUnits:
+      type: object
+      additionalProperties: false
+      required:
+      - units
+      - referenceId
+      - reason
+      properties:
+        units:
+          type: integer
+          format: int64
+          minimum: 1
+        referenceId:
+          type: string
+          minLength: 1
+          maxLength: 255
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 500
+    EntitlementApplyResult:
+      type: object
+      additionalProperties: false
+      required:
+      - entry
+      - balance
+      - created
+      properties:
+        entry:
+          $ref: '#/components/schemas/EntitlementEntry'
+        balance:
+          $ref: '#/components/schemas/EntitlementBalance'
+        created:
+          type: boolean
+    SupportCategory:
+      type: string
+      enum:
+      - class
+      - learning
+      - account
+      - policy
+      - technical
+      - other
+    SupportSeverity:
+      type: string
+      enum:
+      - low
+      - medium
+      - high
+      - critical
+    SupportStatus:
+      type: string
+      enum:
+      - open
+      - investigating
+      - waiting
+      - resolved
+      - closed
+    SupportVisibility:
+      type: string
+      enum:
+      - customer_visible
+      - internal
+    SupportEvent:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - type
+      - visibility
+      - actorId
+      - metadata
+      - occurredAt
+      properties:
+        id:
+          $ref: '#/components/schemas/UUIDReference'
+        type:
+          type: string
+          enum:
+          - opened
+          - message
+          - assigned
+          - status_changed
+        visibility:
+          $ref: '#/components/schemas/SupportVisibility'
+        actorId:
+          $ref: '#/components/schemas/UUIDReference'
+        body:
+          type: string
+          maxLength: 10000
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        occurredAt:
+          type: string
+          format: date-time
+    SupportCase:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - familyId
+      - openedBy
+      - category
+      - severity
+      - status
+      - subject
+      - openedAt
+      - slaDueAt
+      - updatedAt
+      - version
+      - events
+      properties:
+        id:
+          $ref: '#/components/schemas/UUIDReference'
+        familyId:
+          $ref: '#/components/schemas/UUIDReference'
+        openedBy:
+          $ref: '#/components/schemas/UUIDReference'
+        category:
+          $ref: '#/components/schemas/SupportCategory'
+        severity:
+          $ref: '#/components/schemas/SupportSeverity'
+        status:
+          $ref: '#/components/schemas/SupportStatus'
+        subject:
+          type: string
+          minLength: 1
+          maxLength: 200
+        assignedTo:
+          $ref: '#/components/schemas/UUIDReference'
+        openedAt:
+          type: string
+          format: date-time
+        slaDueAt:
+          type: string
+          format: date-time
+        resolvedAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        version:
+          type: integer
+          format: int64
+          minimum: 1
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupportEvent'
+    SupportCasePage:
+      type: object
+      additionalProperties: false
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupportCase'
+        nextCursor:
+          type: string
+    CreateSupportCase:
+      type: object
+      additionalProperties: false
+      required:
+      - familyId
+      - category
+      - severity
+      - subject
+      - message
+      properties:
+        familyId:
+          $ref: '#/components/schemas/UUIDReference'
+        category:
+          $ref: '#/components/schemas/SupportCategory'
+        severity:
+          $ref: '#/components/schemas/SupportSeverity'
+        subject:
+          type: string
+          minLength: 1
+          maxLength: 200
+        message:
+          type: string
+          minLength: 1
+          maxLength: 10000
+    AppendSupportEvent:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - visibility
+      - body
+      properties:
+        version:
+          type: integer
+          format: int64
+          minimum: 1
+        visibility:
+          $ref: '#/components/schemas/SupportVisibility'
+        body:
+          type: string
+          minLength: 1
+          maxLength: 10000
+    AssignSupportCase:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - assigneeId
+      - reason
+      properties:
+        version:
+          type: integer
+          format: int64
+          minimum: 1
+        assigneeId:
+          $ref: '#/components/schemas/UUIDReference'
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 500
+    ChangeSupportCaseStatus:
+      type: object
+      additionalProperties: false
+      required:
+      - version
+      - status
+      - reason
+      properties:
+        version:
+          type: integer
+          format: int64
+          minimum: 1
+        status:
+          $ref: '#/components/schemas/SupportStatus'
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 500
+    AcademyTrialReschedule:
+      type: object
+      additionalProperties: false
+      required:
+      - slotId
+      - reason
+      - idempotencyKey
+      properties:
+        slotId:
+          type: string
+        reason:
+          type: string
+        idempotencyKey:
+          type: string
+    LearningAssignedResource:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - version
+      - title
+      - kind
+      - content
+      properties:
+        id:
+          type: string
+        version:
+          type: integer
+          format: int32
+        title:
+          type: string
+        kind:
+          type: string
+        content:
+          type: string
+        fileId:
+          type: string
+        filename:
+          type: string
+    LearningPlacement:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - studentId
+      - curriculumVersionId
+      - curriculumVersion
+      - levelSlug
+      - previousLevelSlug
+      - assessmentId
+      - reason
+      - placedBy
+      - createdAt
+      properties:
+        id:
+          type: string
+        studentId:
+          type: string
+        curriculumVersionId:
+          type: string
+        curriculumVersion:
+          type: string
+        levelSlug:
+          type: string
+        previousLevelSlug:
+          type: string
+        assessmentId:
+          type: string
+        reason:
+          type: string
+        placedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    AcademyAvailabilityInput:
+      type: object
+      additionalProperties: false
+      required:
+      - coachId
+      - startsAt
+      - endsAt
+      - timeZone
+      - status
+      properties:
+        coachId:
+          type: string
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type: string
+          format: date-time
+        timeZone:
+          type: string
+        status:
+          type: string
+    AcademyTrialSlotInput:
+      type: object
+      additionalProperties: false
+      required:
+      - coachId
+      - startsAt
+      - endsAt
+      - timeZone
+      - format
+      - capacity
+      - ageBands
+      properties:
+        coachId:
+          type: string
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type: string
+          format: date-time
+        timeZone:
+          type: string
+        format:
+          type: string
+        capacity:
+          type: integer
+          format: int32
+        ageBands:
+          type: array
+          items:
+            type: string
+    AcademyPagination: &id002
+      type: object
+      additionalProperties: false
+      required:
+      - limit
+      - hasMore
+      - nextLimit
+      properties:
+        limit:
+          type: integer
+          format: int32
+        hasMore:
+          type: boolean
+        nextLimit:
+          type: integer
+          format: int32
+    AcademyMakeUp:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - classId
+      - studentId
+      - reason
+      - status
+      - createdAt
+      properties:
+        id:
+          type: string
+        classId:
+          type: string
+        studentId:
+          type: string
+        reason:
+          type: string
+        status:
+          type: string
+        replacementClassId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    AcademyMakeUpFulfillment:
+      type: object
+      additionalProperties: false
+      required:
+      - replacementClassId
+      - idempotencyKey
+      properties:
+        replacementClassId:
+          type: string
+        idempotencyKey:
+          type: string
+    AcademyMonthlyWorkload:
+      type: object
+      additionalProperties: false
+      required:
+      - month
+      - completedClassMinutes
+      - completedTrialMinutes
+      - completedClasses
+      - completedTrials
+      properties:
+        month:
+          type: string
+        completedClassMinutes:
+          type: integer
+          format: int32
+        completedTrialMinutes:
+          type: integer
+          format: int32
+        completedClasses:
+          type: integer
+          format: int32
+        completedTrials:
+          type: integer
+          format: int32
+    AcademyStaffRecord:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - displayName
+      - email
+      - status
+      - roles
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+        displayName:
+          type: string
+        email:
+          type: string
+        status:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    AcademyStaffDirectory:
+      type: object
+      additionalProperties: false
+      required:
+      - staff
+      properties:
+        staff:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademyStaffRecord'
+    AcademyStaffUpdate:
+      type: object
+      additionalProperties: false
+      required:
+      - displayName
+      - status
+      - expectedUpdatedAt
+      properties:
+        displayName:
+          type: string
+        status:
+          type: string
+        expectedUpdatedAt:
+          type: string
+          format: date-time
+    LearningPagination: *id002

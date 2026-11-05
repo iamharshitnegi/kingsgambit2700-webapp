@@ -1,0 +1,12 @@
+DROP TRIGGER IF EXISTS classroom_snapshots_append_only ON classroom_snapshots;
+DROP TRIGGER IF EXISTS classroom_events_append_only ON classroom_events;
+DROP TRIGGER IF EXISTS audit_events_append_only ON audit_events;
+DROP TRIGGER IF EXISTS provider_ledger_entries_append_only ON provider_ledger_entries;
+DROP TRIGGER IF EXISTS payment_transactions_append_only ON payment_transactions;
+DROP TRIGGER IF EXISTS entitlement_entries_append_only ON entitlement_entries;
+DROP TRIGGER IF EXISTS consent_records_append_only ON consent_records;
+DROP TRIGGER IF EXISTS progress_report_versions_published_immutable ON progress_report_versions;
+DROP TRIGGER IF EXISTS curriculum_versions_published_immutable ON curriculum_versions;
+DROP TRIGGER IF EXISTS policy_versions_published_immutable ON policy_versions;
+DROP FUNCTION IF EXISTS kg_reject_published_version_mutation();
+DROP FUNCTION IF EXISTS kg_reject_append_only_mutation();

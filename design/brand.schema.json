@@ -1,0 +1,400 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KingsGambit2700 brand configuration",
+  "description": "Shared Open Play tokens for the application and standalone design demo.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "name",
+    "version",
+    "status",
+    "description",
+    "defaultAccent",
+    "accents",
+    "colors",
+    "typography",
+    "spacing",
+    "radius",
+    "layout",
+    "motion",
+    "shadow"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "./brand.schema.json"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "status": {
+      "const": "approved"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "defaultAccent": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "Initial accent on every page load. Must match an entry in accents; this cross-property relationship requires a separate runtime check."
+    },
+    "accents": {
+      "type": "object",
+      "required": [
+        "brown",
+        "cobalt",
+        "forest",
+        "plum"
+      ],
+      "minProperties": 4,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9-]*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/accent"
+      },
+      "description": "The brown revision is the default; original proposal palettes remain available as alternatives."
+    },
+    "colors": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canvas",
+        "surface",
+        "ink",
+        "muted",
+        "subtle",
+        "line",
+        "dark",
+        "onDark",
+        "success",
+        "successSoft",
+        "warning",
+        "warningSoft",
+        "danger",
+        "dangerSoft",
+        "boardLight",
+        "boardDark"
+      ],
+      "properties": {
+        "canvas": {
+          "$ref": "#/$defs/color"
+        },
+        "surface": {
+          "$ref": "#/$defs/color"
+        },
+        "ink": {
+          "$ref": "#/$defs/color"
+        },
+        "muted": {
+          "$ref": "#/$defs/color"
+        },
+        "subtle": {
+          "$ref": "#/$defs/color"
+        },
+        "line": {
+          "$ref": "#/$defs/color"
+        },
+        "dark": {
+          "$ref": "#/$defs/color"
+        },
+        "onDark": {
+          "$ref": "#/$defs/color"
+        },
+        "success": {
+          "$ref": "#/$defs/color"
+        },
+        "successSoft": {
+          "$ref": "#/$defs/color"
+        },
+        "warning": {
+          "$ref": "#/$defs/color"
+        },
+        "warningSoft": {
+          "$ref": "#/$defs/color"
+        },
+        "danger": {
+          "$ref": "#/$defs/color"
+        },
+        "dangerSoft": {
+          "$ref": "#/$defs/color"
+        },
+        "boardLight": {
+          "$ref": "#/$defs/color"
+        },
+        "boardDark": {
+          "$ref": "#/$defs/color"
+        }
+      }
+    },
+    "typography": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "display",
+        "body",
+        "mono",
+        "displayWeight",
+        "bodyWeight",
+        "scale"
+      ],
+      "properties": {
+        "display": {
+          "type": "string",
+          "minLength": 1
+        },
+        "body": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mono": {
+          "type": "string",
+          "minLength": 1
+        },
+        "displayWeight": {
+          "$ref": "#/$defs/weight"
+        },
+        "bodyWeight": {
+          "$ref": "#/$defs/weight"
+        },
+        "scale": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "micro",
+            "small",
+            "body",
+            "lead",
+            "title",
+            "hero"
+          ],
+          "properties": {
+            "micro": {
+              "type": "string",
+              "minLength": 1
+            },
+            "small": {
+              "type": "string",
+              "minLength": 1
+            },
+            "body": {
+              "type": "string",
+              "minLength": 1
+            },
+            "lead": {
+              "type": "string",
+              "minLength": 1
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1
+            },
+            "hero": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "spacing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "6",
+        "8",
+        "12",
+        "16",
+        "24"
+      ],
+      "properties": {
+        "1": {
+          "$ref": "#/$defs/length"
+        },
+        "2": {
+          "$ref": "#/$defs/length"
+        },
+        "3": {
+          "$ref": "#/$defs/length"
+        },
+        "4": {
+          "$ref": "#/$defs/length"
+        },
+        "6": {
+          "$ref": "#/$defs/length"
+        },
+        "8": {
+          "$ref": "#/$defs/length"
+        },
+        "12": {
+          "$ref": "#/$defs/length"
+        },
+        "16": {
+          "$ref": "#/$defs/length"
+        },
+        "24": {
+          "$ref": "#/$defs/length"
+        }
+      }
+    },
+    "radius": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "small",
+        "medium",
+        "large",
+        "pill"
+      ],
+      "properties": {
+        "small": {
+          "$ref": "#/$defs/length"
+        },
+        "medium": {
+          "$ref": "#/$defs/length"
+        },
+        "large": {
+          "$ref": "#/$defs/length"
+        },
+        "pill": {
+          "$ref": "#/$defs/length"
+        }
+      }
+    },
+    "layout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contentMax",
+        "gutter",
+        "sidebar"
+      ],
+      "properties": {
+        "contentMax": {
+          "type": "string",
+          "minLength": 1
+        },
+        "gutter": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sidebar": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "motion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fast",
+        "normal",
+        "entrance",
+        "ease"
+      ],
+      "properties": {
+        "fast": {
+          "$ref": "#/$defs/duration"
+        },
+        "normal": {
+          "$ref": "#/$defs/duration"
+        },
+        "entrance": {
+          "$ref": "#/$defs/duration"
+        },
+        "ease": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "shadow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "card",
+        "float"
+      ],
+      "properties": {
+        "card": {
+          "type": "string",
+          "minLength": 1
+        },
+        "float": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  },
+  "$defs": {
+    "color": {
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$",
+      "description": "Opaque six-digit sRGB hex color. Validate accessible foreground/background contrast separately."
+    },
+    "accent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "label",
+        "primary",
+        "primaryHover",
+        "primarySoft",
+        "onPrimary",
+        "highlight",
+        "onHighlight"
+      ],
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "primary": {
+          "$ref": "#/$defs/color"
+        },
+        "primaryHover": {
+          "$ref": "#/$defs/color"
+        },
+        "primarySoft": {
+          "$ref": "#/$defs/color"
+        },
+        "onPrimary": {
+          "$ref": "#/$defs/color"
+        },
+        "highlight": {
+          "$ref": "#/$defs/color"
+        },
+        "onHighlight": {
+          "$ref": "#/$defs/color"
+        }
+      }
+    },
+    "weight": {
+      "type": "integer",
+      "minimum": 100,
+      "maximum": 900,
+      "multipleOf": 100
+    },
+    "length": {
+      "type": "string",
+      "pattern": "^(?:0|[0-9]+(?:\\.[0-9]+)?(?:px|rem|em))$"
+    },
+    "duration": {
+      "type": "string",
+      "pattern": "^[0-9]+(?:\\.[0-9]+)?m?s$"
+    }
+  }
+}

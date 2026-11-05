@@ -1,12 +1,30 @@
-import { MetadataRoute } from 'next'
+import type { MetadataRoute } from "next";
+import { getSiteURL } from "./lib/env";
+
+const siteURL = getSiteURL();
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/studio/'], // Sanity Studio
+      userAgent: "*",
+      allow: "/",
+      disallow: [
+        "/admin",
+        "/api/",
+        "/auth/",
+        "/classroom/",
+        "/coach",
+        "/demo",
+        "/forbidden",
+        "/guardian",
+        "/portal",
+        "/sign-in",
+        "/student-access",
+        "/student",
+        "/studio/",
+      ],
     },
-    sitemap: 'https://kingsgambit2700.in/sitemap.xml',
-  }
+    sitemap: `${siteURL}/sitemap.xml`,
+    host: siteURL,
+  };
 }

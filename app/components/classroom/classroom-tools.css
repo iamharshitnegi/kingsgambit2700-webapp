@@ -1,0 +1,26 @@
+.classroom-lesson-tools { display: grid; gap: 14px; }
+.classroom-tool-card { --room-fg:#312c26; --room-muted:#6b5a45; color:#312c26; padding: 18px; border: 1px solid #e5dccd; border-radius: 16px; background: #fffcf6; }
+.classroom-tool-card h3, .classroom-tool-card summary { margin: 0; font-size: 1rem; font-weight: 650; }
+.classroom-tool-card summary { cursor: pointer; }
+.classroom-tool-card summary span { float: right; font-size: .8rem; color: #766751; }
+.classroom-tool-card p { font-size: .84rem; line-height: 1.5; color: #766751; }
+.classroom-tool-card label { display: grid; gap: 6px; margin: 14px 0 10px; font-size: .8rem; font-weight: 600; }
+.classroom-tool-card input, .classroom-tool-card select, .classroom-tool-card textarea { width: 100%; min-width: 0; padding: 10px; font: inherit; color: #312c26; border: 1px solid #d9cfbf; border-radius: 8px; background: #fff; }
+.classroom-tool-card textarea { resize: vertical; font-family: ui-monospace, monospace; font-size: .78rem; }
+.classroom-tool-card button { border: 1px solid #cab99d; border-radius: 8px; background: #f5efdf; color: #443728; padding: 8px 11px; font-size: .8rem; cursor: pointer; }
+.classroom-tool-card button:disabled { opacity: .45; cursor: not-allowed; }
+.classroom-tool-card form + form { margin-top: 18px; }
+.classroom-tool-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.classroom-checkpoint-list { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 9px; }
+.classroom-checkpoint-list li { display: flex; align-items: center; gap: 6px; font-size: .8rem; }
+.classroom-checkpoint-list li span { flex: 1; overflow-wrap: anywhere; }
+.classroom-countdown { display: grid; justify-items: center; gap: 8px; padding: 20px; border-radius: 16px; background: #edf1e7; color: #35442f; text-align: center; }
+.classroom-countdown strong { font-size: 2.4rem; font-variant-numeric: tabular-nums; font-weight: 600; }
+.classroom-countdown small { font-size: .75rem; }
+.classroom-countdown.is-finished { background: #faf0d8; color: #6c4d18; }
+.classroom-drawing-tools { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 8px 0; }
+.classroom-drawing-tools button { padding: 7px 11px; border: 1px solid #d9cfbf; border-radius: 8px; font-size: .8rem; background: #fffaf2; color:#443728; }
+.classroom-drawing-tools button[aria-pressed="true"] { background: #384c3c; color: #fff; }
+.classroom-drawing-tools input { width: 34px; height: 30px; padding: 2px; border: 1px solid #d9cfbf; border-radius: 6px; }
+.classroom-drawing-tools small { flex-basis: 100%; color: var(--room-muted, #766751); }
+.classroom-meeting-link { display: inline-flex; margin-top: 10px; color: var(--room-highlight, #536749); font-weight: 600; }

@@ -1,0 +1,13 @@
+Stockfish.js 19.0.0 — lite, single-threaded WebAssembly build
+Copyright Stockfish authors and Nathan Rugg; licensed under GNU GPL version 3.
+The engine is unchanged from the npm stockfish@19.0.0 distribution.
+License: /engine/COPYING.txt
+Corresponding source: /engine/stockfish-19-source.tar.gz
+Upstream: https://github.com/nmrugg/stockfish.js
+Source revision: 54fde71d90c7c403964f6cacef48f7bbec495df1
+Source includes C++ engine, JavaScript glue, build.js, Makefile and build instructions.
+The matching lite evaluation network is included at /engine/nn-61e7af4bb97d.nnue.
+Its SHA-256 begins 61e7af4bb97d, as required by this revision's evaluate.h.
+To rebuild, extract the source archive, copy that network into src/, install
+Emscripten 3.1.7 as described by upstream, and run ./build.js --help for the
+--lite and single-thread build options. SHA256SUMS records all shipped inputs.
