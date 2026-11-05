@@ -48,11 +48,11 @@ before closing the current session. Set A records for the academy domain,
 `www`, and API domain to the VPS. Remove or correct stale AAAA records when IPv6
 does not reach this VPS. Ports 80 and 443 must be available for Caddy.
 
-Copy a complete release checkout onto the VPS. The current local working tree
-contains application files not yet committed: cloning only the older Git commit
-would not reproduce it. Commit and review the intended release first, or use a
-carefully prepared source archive that excludes `.env`, `.git`, dependencies,
-build outputs and local test data. Do not copy the local database as production.
+Copy a complete, reviewed release checkout onto the VPS. Use the committed
+application source or a source archive that excludes private settings,
+dependencies, build outputs, and local test data. Do not copy the local database
+as production. For subsequent automatic releases, configure
+[GitHub Actions deployment](github-deployment.md).
 
 ## 2. Configure this deployment
 

@@ -361,6 +361,10 @@ academy records; the demo uses separate browser storage.
 
 ## Deployment
 
+For this project's Hostinger VPS, [GitHub Actions deployment](docs/github-deployment.md)
+builds and deploys successful `main` commits after CI passes. Complete the one-time
+SSH secret setup before enabling the first automatic release.
+
 The frontend and backend are intentionally independent deployments:
 
 - Deploy the Next.js root at `kingsgambit2700.in` and

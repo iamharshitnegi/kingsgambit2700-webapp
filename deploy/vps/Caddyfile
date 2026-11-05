@@ -3,6 +3,7 @@
 }
 
 {$WEB_DOMAIN} {
+    header X-KG-Release {$RELEASE}
     encode zstd gzip
     reverse_proxy frontend:3000
 }
@@ -12,6 +13,7 @@ www.{$WEB_DOMAIN} {
 }
 
 {$API_DOMAIN} {
+    header X-KG-Release {$RELEASE}
     encode zstd gzip
 
     handle /ws/v1 {

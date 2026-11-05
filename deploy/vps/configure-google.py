@@ -6,7 +6,7 @@ from pathlib import Path
 import re
 import sys
 
-env_path = Path(__file__).resolve().parent / '.env'
+env_path = (Path(__file__).resolve().parent / '.env').resolve()
 if not env_path.exists():
     sys.exit('Run init-env.sh first.')
 if not sys.stdin.isatty():

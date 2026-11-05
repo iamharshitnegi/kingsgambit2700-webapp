@@ -1,0 +1,75 @@
+name: Deploy Hostinger VPS
+
+on:
+  workflow_call:
+    secrets:
+      VPS_SSH_KEY:
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kg2700-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      VPS_HOST: 187.126.116.75
+      WEB_DOMAIN: ${{ vars.KG_WEB_DOMAIN || 'kingsgambit2700.in' }}
+      API_DOMAIN: ${{ vars.KG_API_DOMAIN || 'api.kingsgambit2700.in' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Configure dedicated deployment key
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$VPS_SSH_KEY" ]]; then
+            echo 'Add the VPS_SSH_KEY repository Actions secret; see docs/github-deployment.md.' >&2
+            exit 1
+          fi
+          umask 077
+          printf '%s\n' "$VPS_SSH_KEY" > "$RUNNER_TEMP/kg2700-deploy-key"
+          ssh-keygen -y -f "$RUNNER_TEMP/kg2700-deploy-key" > /dev/null
+      - name: Build and package this exact commit
+        run: bash deploy/vps/build-release.sh "$GITHUB_SHA" "$RUNNER_TEMP/kg2700-release"
+      - name: Transfer and deploy
+        run: |
+          set -euo pipefail
+          ssh_options=(
+            -i "$RUNNER_TEMP/kg2700-deploy-key"
+            -o IdentitiesOnly=yes -o BatchMode=yes
+            -o StrictHostKeyChecking=yes
+            -o UserKnownHostsFile="$GITHUB_WORKSPACE/deploy/vps/known_hosts"
+            -o ServerAliveInterval=15 -o ServerAliveCountMax=4
+          )
+          bundle="$RUNNER_TEMP/kg2700-release/release.tar"
+          digest="$(sha256sum "$bundle" | cut -d ' ' -f 1)"
+          ssh "${ssh_options[@]}" "root@$VPS_HOST" "upload $GITHUB_SHA $digest" < "$bundle"
+          ssh "${ssh_options[@]}" "root@$VPS_HOST" "deploy $GITHUB_SHA"
+      - name: Verify public HTTPS
+        run: |
+          set -euo pipefail
+          for url in "https://$WEB_DOMAIN/sign-in" "https://$API_DOMAIN/health/ready"; do
+            curl --fail --silent --show-error --output /dev/null \
+              --retry 6 --retry-delay 5 --retry-all-errors \
+              --connect-timeout 10 --max-time 20 "$url"
+          done
+          {
+            echo '### Production deployment'
+            echo "Commit: $GITHUB_SHA"
+            echo "Website: https://$WEB_DOMAIN"
+            echo "API readiness: https://$API_DOMAIN/health/ready"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Remove runner credentials and release files
+        if: always()
+        run: |
+          rm -f "$RUNNER_TEMP/kg2700-deploy-key"
+          rm -rf "$RUNNER_TEMP/kg2700-release"

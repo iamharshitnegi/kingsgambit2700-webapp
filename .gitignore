@@ -53,6 +53,7 @@ yarn-error.log*
 # private environment files; keep reusable configuration examples
 .env*
 !.env.example
+/deploy/vps/.release
 
 # Engine binaries are copied from the pinned npm dependency by predev/prebuild.
 # Keep the source archive, evaluation network, notices, and GPL license in Git.

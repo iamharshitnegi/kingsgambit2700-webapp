@@ -60,6 +60,7 @@ services:
       WEB_DOMAIN: ${WEB_DOMAIN:?Set WEB_DOMAIN}
       API_DOMAIN: ${API_DOMAIN:?Set API_DOMAIN}
       ACME_EMAIL: ${ACME_EMAIL:?Set ACME_EMAIL}
+      RELEASE: ${RELEASE:-initial}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data

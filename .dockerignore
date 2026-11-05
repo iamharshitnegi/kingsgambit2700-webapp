@@ -9,6 +9,10 @@ playwright-report
 coverage
 *.tsbuildinfo
 *.vsix
+*.key
+*.pem
+__pycache__
+*.py[cod]
 backend
 docs
 tests

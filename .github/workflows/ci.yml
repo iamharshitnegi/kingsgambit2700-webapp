@@ -4,13 +4,15 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  # Never interrupt an in-flight production deployment or migration.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   frontend:
@@ -121,7 +123,24 @@ jobs:
 
   compose:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - run: docker compose config --quiet
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+          cache-dependency-path: backend/go.sum
+      - run: go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.7
+      - run: |
+          for script in deploy/vps/*.sh; do bash -n "$script"; done
+      - run: python3 -m unittest discover -s tests/deploy -v
+
+  deploy:
+    needs: [frontend, backend, generated-code, integration, compose]
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    uses: ./.github/workflows/deploy-vps.yml
+    secrets:
+      VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
