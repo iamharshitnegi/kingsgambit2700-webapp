@@ -23,7 +23,7 @@ jobs:
       WEB_DOMAIN: ${{ vars.KG_WEB_DOMAIN || 'kingsgambit2700.in' }}
       API_DOMAIN: ${{ vars.KG_API_DOMAIN || 'api.kingsgambit2700.in' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - name: Configure dedicated deployment key
